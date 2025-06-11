@@ -14,7 +14,11 @@
 
     h2,
     h3 {
-      color: #333;
+      color: white;
+    }
+
+    .seller-details {
+      display: none;
     }
 
     form {
@@ -35,7 +39,7 @@
 
     legend {
       font-weight: bold;
-      color: #444;
+      color: black;
     }
 
     input[type="text"],
@@ -102,12 +106,13 @@
       margin: 20px auto;
       max-width: 900px;
       overflow-x: auto;
+      text-align: left;
     }
   </style>
 </head>
 
 <body>
-  <h2>E-Invoice Form</h2>
+  <h2 class"header">E-Invoice Form</h2>
 
   <form id="invoiceForm">
     <fieldset>
@@ -154,7 +159,7 @@
   </form>
 
   <h3>Output JSON:</h3>
-  <pre id="output"></pre>
+  <pre id="output">NO DATA TO DISPLAY!</pre>
 
   <script>
     let itemCount = 0;
@@ -225,31 +230,36 @@
         desc: "WARRANTY",
         hsn: "87141090",
         gst: 28,
-        isIGST: true
+        isIGST: true,
+        IsServc: "N"
       },
       "BATTERY": {
         desc: "BATTERY",
         hsn: "85072000",
         gst: 18,
-        isIGST: false
+        isIGST: false,
+        IsServc: "N"
       },
       "ENGINE OIL": {
         desc: "ENGINE OIL",
         hsn: "27101980",
         gst: 18,
-        isIGST: true
+        isIGST: true,
+        IsServc: "N"
       },
       "PETROL VEHICLE": {
         desc: "TVS RAIDER 125",
         hsn: "87112029",
         gst: 28,
-        isIGST: false
+        isIGST: false,
+        IsServc: "N"
       },
       "IQUBE VEHICLE": {
         desc: "TVS IQUBE",
         hsn: "87112029",
         gst: 5,
-        isIGST: false
+        isIGST: false,
+        IsServc: "N"
       }
     };
 
@@ -275,6 +285,7 @@
     Description: <input type="text" class="itemDesc" value="">
     HSN Code: <input type="text" class="hsnCode" value="">
     Quantity: <input type="number" class="qty" value="1" oninput="updateGST(this)">
+    IsServc: <input type="text" class="IsServc" value="" disabled>
     Unit: <input type="text" class="unit" value="NOS" disabled>
     Unit Price: <input type="number" step="0.01" class="unitPrice" value="0" oninput="updateGST(this)">
     GST Rate (%): <input type="number" step="0.01" class="gstRate" value="18" oninput="updateGST(this)">
@@ -298,6 +309,7 @@
       const gstField = block.querySelector('.gstRate');
       const igstDiv = block.querySelector('.igstDiv');
       const cgstSgstDiv = block.querySelector('.cgstSgstDiv');
+      const IsServc = block.querySelector('.IsServc');
       if (selected === "custom") {
         descField.value = "";
         hsnField.value = "";
@@ -317,6 +329,8 @@
           cgstSgstDiv.style.display = "block";
         }
       }
+      const item = predefinedItems[selected];
+      IsServc.value = item.IsServc;
       updateGST(selectEl);
     }
 
@@ -437,6 +451,7 @@
         const sgstAmt = parseFloat(block.querySelector('.sgstAmt').value) || 0;
         const totItemVal = parseFloat(block.querySelector('.totItemVal').value) || 0;
         const itemAssVal = unitPrice * qty;
+        const IsServc = block.querySelector('.IsServc').value;
         assVal += itemAssVal;
         igstVal += igstAmt;
         cgstVal += cgstAmt;
@@ -445,7 +460,7 @@
         invoice.ItemList.push({
           SlNo: String(index + 1),
           PrdDesc: desc,
-          IsServc: "N",
+          IsServc: IsServc,
           HsnCd: hsn,
           Qty: qty,
           FreeQty: 0,
