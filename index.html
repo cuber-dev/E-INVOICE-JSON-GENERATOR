@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Invoice JSON Generator</title>
+
   <style>
     body {
       font-family: system-ui;
       background: #020024;
       background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(36, 36, 143, 1) 35%, rgba(36, 106, 115, 1) 100%);
-      color: #828282;
+      color: #4e4f52;
       text-align: center;
     }
 
@@ -141,6 +142,15 @@
       border-radius: 10px;
       background-color: #3b3dc4;
     }
+
+    .footer {
+      background-color: #222;
+      color: #00ff51;
+      width: max-content;
+      margin: auto;
+      padding: .8rem 1.5rem;
+      border-radius: 6px;
+    }
   </style>
 </head>
 
@@ -193,16 +203,16 @@
           Total CGST: <input type="text" value="00" id="total-cgst" readonly>
           Total Amount :<input type="text" value="00" id="total-amount" readonly>
         </div>
-        <button type="button" class="form-button" onclick="addItem()">+ Add Item</button>
+        <button type="button" class="form-button" onclick="addItem()">Add Item +</button>
         <br>
-        <button type="button" class="form-button" onclick="generateJSON()">✅ Generate JSON</button>
+        <button type="button" class="form-button" onclick="generateJSON()">Generate JSON </button>
       </div>
     </fieldset>
   </form>
 
   <h3>Output JSON:</h3>
   <pre id="output">NO DATA TO DISPLAY!</pre>
-
+  <h3 class="footer">Designed & Developed by Nandhu</h3>
   <script>
     let itemCount = 0;
     const buyerMap = {
