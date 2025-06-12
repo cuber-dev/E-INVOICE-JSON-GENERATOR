@@ -7,8 +7,9 @@
   <style>
     body {
       font-family: system-ui;
-      background: #f06d06;
-      color: white;
+      background: #020024;
+      background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(36, 36, 143, 1) 35%, rgba(36, 106, 115, 1) 100%);
+      color: #828282;
       text-align: center;
     }
 
@@ -22,31 +23,46 @@
     }
 
     form {
-      background-color: #fff;
+      background-color: #fafafc;
       padding: 20px;
       border-radius: 10px;
-      max-width: 900px;
+      max-width: 1300px;
       margin: auto;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      text-align: left;
+    }
+
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
     }
 
     fieldset {
-      margin-bottom: 20px;
       border: 1px solid #ddd;
       padding: 15px;
       border-radius: 8px;
+      background-color: #fafafc;
     }
 
     legend {
       font-weight: bold;
-      color: black;
+      color: #5c5c61;
     }
 
     input[type="text"],
     input[type="number"],
     select {
       padding: 8px;
-      margin: 5px 0 10px 0;
+      margin: .6rem 0;
       width: 100%;
       box-sizing: border-box;
       border: 1px solid #ccc;
@@ -54,7 +70,7 @@
     }
 
     .item-block {
-      background: #fafafa;
+      background-color: #fafafc;
       padding: 15px;
       border: 1px solid #ccc;
       margin-bottom: 15px;
@@ -64,7 +80,7 @@
 
     .item-block h4 {
       margin-top: 0;
-      color: #444;
+      color: #5c5c61;
     }
 
     .delete-btn {
@@ -84,7 +100,6 @@
     }
 
     button {
-      background-color: #007bff;
       color: white;
       border: none;
       padding: 10px 16px;
@@ -108,6 +123,24 @@
       overflow-x: auto;
       text-align: left;
     }
+
+    h2.header {
+      margin-top: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .form-button {
+      width: 100%;
+      margin: 1rem 0;
+      padding: 1rem;
+      font-size: 1rem;
+      font-style: bold;
+      border-radius: 10px;
+      background-color: #3b3dc4;
+    }
   </style>
 </head>
 
@@ -117,8 +150,8 @@
   <form id="invoiceForm">
     <fieldset>
       <legend>Document Details</legend>
-      Doc No: <input type="text" id="docNo" value="63941029">
-      Doc Date: <input type="text" id="docDate" value="">
+      Document No: <input type="text" id="docNo" value="63941029">
+      Document Date: <input type="text" id="docDate" value="">
     </fieldset>
 
     <fieldset class="seller-details" disabled>
@@ -143,19 +176,20 @@
         GSTIN: <input type="text" id="buyerGstin" disabled>
         Legal Name: <input type="text" id="buyerName" disabled>
         Address1: <input type="text" id="buyerAddr1" disabled>
-        Address2: <input type="text" id="buyerAddr2" disabled>
-        Location: <input type="text" id="buyerLoc" disabled>
-        Pin: <input type="number" id="buyerPin" disabled>
-        Pos: <input type="text" id="buyerPos" disabled>
-        State Code: <input type="text" id="buyerStcd" disabled>
+        Address2: <input type="text" id="buyerAddr2" class="hidden" disabled>
+        <input type="text" id="buyerLoc" disabled>
+        <input type="number" id="buyerPin" class="hidden" disabled>
+        <input type="text" id="buyerPos" class="hidden" disabled>
+        <input type="text" id="buyerStcd" class="hidden" disabled>
       </div>
     </fieldset>
-
-    <h3>Items</h3>
     <div id="itemsContainer"></div>
-    <button type="button" onclick="addItem()">+ Add Item</button><br><br>
+    <div class="buttons-container">
+      <button type="button" class="form-button" onclick="addItem()">+ Add Item</button>
+      <br>
+      <button type="button" class="form-button" onclick="generateJSON()">✅ Generate JSON</button>
+    </div>
 
-    <button type="button" onclick="generateJSON()">✅ Generate JSON</button>
   </form>
 
   <h3>Output JSON:</h3>
@@ -267,6 +301,20 @@
         gst: 28,
         isIGST: false,
         IsServc: "N"
+      },
+      "COMMISION": {
+        desc: "COMMISION",
+        hsn: "996211",
+        gst: 18,
+        isIGST: false,
+        IsServc: "Y"
+      },
+      "FSC CLAIM FROM TVSM": {
+        desc: "FSC CLAIM FROM TVSM",
+        hsn: "997161",
+        gst: 18,
+        isIGST: true,
+        IsServc: "Y"
       }
     };
 
@@ -292,8 +340,8 @@
     Description: <input type="text" class="itemDesc" value="">
     HSN Code: <input type="text" class="hsnCode" value="">
     Quantity: <input type="number" class="qty" value="1" oninput="updateGST(this)">
-    IsServc: <input type="text" class="IsServc" value="" disabled>
-    Unit: <input type="text" class="unit" value="NOS" disabled>
+   <input type="text" class="IsServc hidden" value="" disabled>
+  <input type="text" class="unit hidden" value="NOS" disabled>
     Unit Price: <input type="number" step="0.01" class="unitPrice" value="0" oninput="updateGST(this)">
     GST Rate (%): <input type="number" step="0.01" class="gstRate" value="18" oninput="updateGST(this)">
     
