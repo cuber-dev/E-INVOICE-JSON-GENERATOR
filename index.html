@@ -118,7 +118,7 @@
     <fieldset>
       <legend>Document Details</legend>
       Doc No: <input type="text" id="docNo" value="63941029">
-      Doc Date: <input type="text" id="docDate" value="11/06/2025">
+      Doc Date: <input type="text" id="docDate" value="">
     </fieldset>
 
     <fieldset class="seller-details" disabled>
@@ -168,7 +168,7 @@
         Gstin: "33AAACS7032B1ZZ",
         LglNm: "TVS MOTOR COMPANY LTD",
         Addr1: "PB NO-4 HARITHA HOSUR",
-        Addr2: "PB NO-4 HARITHA HOSUR",
+        Addr2: null,
         Loc: "TAMILNADU",
         Pin: 600006,
         Pos: "33",
@@ -192,7 +192,7 @@
         Gstin: "02AAACS7032B1Z4",
         LglNm: "TVS MOTOR COMPANY LTD",
         Addr1: "HIMACHAL PRADESH",
-        Addr2: "HIMACHAL PRADESH",
+        Addr2: null,
         Loc: "HIMACHAL PRADESH",
         Pin: 176052,
         Pos: "02",
@@ -204,7 +204,7 @@
         Gstin: "36AAACB5861B1Z1",
         LglNm: "BERAR FINANCE LTD",
         Addr1: "2N, 2, WARANGAL CITY CENTER, MULGU ROAD, INDUSTRIAL ETATE,Hanumakonda",
-        Addr2: "WARANGAL",
+        Addr2: null,
         Loc: "WARANGAL",
         Pin: 503002,
         Pos: "36",
@@ -258,6 +258,13 @@
         desc: "TVS IQUBE",
         hsn: "87112029",
         gst: 5,
+        isIGST: false,
+        IsServc: "N"
+      },
+      "PARTS SALES": {
+        desc: "PARTS SALES",
+        hsn: "84099191",
+        gst: 28,
         isIGST: false,
         IsServc: "N"
       }
@@ -523,6 +530,12 @@
       buildBuyerDropdown?.(); // Optional, if defined elsewhere
       populateBuyerDetails?.(); // Optional, if defined elsewhere
       addItem?.(); // Optional, if defined elsewhere
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+      const year = String(today.getFullYear()).slice(-2); // Get last 2 digits
+      const formattedDate = `${day}/${month}/${year}`;
+      document.getElementById("docDate").value = formattedDate;
     };
   </script>
 </body>
