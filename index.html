@@ -184,12 +184,20 @@
       </div>
     </fieldset>
     <div id="itemsContainer"></div>
-    <div class="buttons-container">
-      <button type="button" class="form-button" onclick="addItem()">+ Add Item</button>
-      <br>
-      <button type="button" class="form-button" onclick="generateJSON()">✅ Generate JSON</button>
-    </div>
+    <fieldset>
 
+      <div class="buttons-container">
+        <div class="total-amount">
+          Total IGST: <input type="text" value="00" id="total-igst" readonly>
+          Total SGCT: <input type="text" value="00" id="total-sgst" readonly>
+          Total CGST: <input type="text" value="00" id="total-cgst" readonly>
+          Total Amount :<input type="text" value="00" id="total-amount" readonly>
+        </div>
+        <button type="button" class="form-button" onclick="addItem()">+ Add Item</button>
+        <br>
+        <button type="button" class="form-button" onclick="generateJSON()">✅ Generate JSON</button>
+      </div>
+    </fieldset>
   </form>
 
   <h3>Output JSON:</h3>
@@ -525,6 +533,21 @@
         totalVal += cgst + sgst;
       }
       block.querySelector('.totItemVal').value = totalVal.toFixed(2);
+      // 🔽 Add this part to update overall totals
+      let totalIgst = 0,
+        totalCgst = 0,
+        totalSgst = 0,
+        totalAmount = 0;
+      document.querySelectorAll('.item-block').forEach(item => {
+        totalIgst += parseFloat(item.querySelector('.igstAmt')?.value) || 0;
+        totalCgst += parseFloat(item.querySelector('.cgstAmt')?.value) || 0;
+        totalSgst += parseFloat(item.querySelector('.sgstAmt')?.value) || 0;
+        totalAmount += parseFloat(item.querySelector('.totItemVal')?.value) || 0;
+      });
+      document.querySelector("#total-igst").value = totalIgst.toFixed(2);
+      document.querySelector("#total-cgst").value = totalCgst.toFixed(2);
+      document.querySelector("#total-sgst").value = totalSgst.toFixed(2);
+      document.querySelector("#total-amount").value = totalAmount.toFixed(2);
     }
 
     function populateBuyerDetails() {
