@@ -160,7 +160,10 @@
   <form id="invoiceForm">
     <fieldset>
       <legend>Document Details</legend>
-      Document No: <input type="text" id="docNo" value="63941029">
+      Document Category: <input type="text" disabled value="B2B">
+      Reverse Charge: <input type="text" disabled value="NO">
+      Document Type: <input type="text" disabled value="Tax Invoice">
+      Document No: <input type="text" id="docNo" value="enter_inv_number">
       Document Date: <input type="text" id="docDate" value="">
     </fieldset>
 
@@ -198,10 +201,10 @@
 
       <div class="buttons-container">
         <div class="total-amount">
-          Total IGST: <input type="text" value="00" id="total-igst" readonly>
-          Total SGCT: <input type="text" value="00" id="total-sgst" readonly>
-          Total CGST: <input type="text" value="00" id="total-cgst" readonly>
-          Total Amount :<input type="text" value="00" id="total-amount" readonly>
+          Total IGST: <input type="text" value="00" id="total-igst" disabled>
+          Total SGCT: <input type="text" value="00" id="total-sgst" disabled>
+          Total CGST: <input type="text" value="00" id="total-cgst" disabled>
+          Total Amount :<input type="text" value="00" id="total-amount" disabled>
         </div>
         <button type="button" class="form-button" onclick="addItem()">Add Item +</button>
         <br>
@@ -471,10 +474,10 @@
     Unit Price: <input type="number" step="0.01" class="unitPrice" value="0" oninput="updateGST(this)">
     GST Rate (%): <input type="number" step="0.01" class="gstRate" value="18" oninput="updateGST(this)">
     
-    <div class="igstDiv">IGST Amount: <input type="number" step="0.01" class="igstAmt" ></div>
+    <div class="igstDiv">IGST Amount: <input type="number" step="0.01" class="igstAmt" disabled></div>
     <div class="cgstSgstDiv" style="display:none;">
-      CGST Amount: <input type="number" step="0.01" class="cgstAmt" readonly>
-      SGST Amount: <input type="number" step="0.01" class="sgstAmt" readonly>
+      CGST Amount: <input type="number" step="0.01" class="cgstAmt" disabled>
+      SGST Amount: <input type="number" step="0.01" class="sgstAmt" disabled>
     </div>
 
     Total Item Value: <input type="number" step="0.01" class="totItemVal" readonly>
