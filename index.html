@@ -145,7 +145,7 @@
 
     .footer {
       background-color: #222;
-      color: #71FF71;
+      color: #0f0;
       width: max-content;
       margin: auto;
       padding: .8rem 1.5rem;
@@ -223,7 +223,7 @@
         Gstin: "33AAACS7032B1ZZ",
         LglNm: "TVS MOTOR COMPANY LTD",
         Addr1: "PB NO-4 HARITHA HOSUR",
-        Addr2: null,
+        Addr2: "TAMILNADU",
         Loc: "TAMILNADU",
         Pin: 600006,
         Pos: "33",
@@ -247,7 +247,7 @@
         Gstin: "02AAACS7032B1Z4",
         LglNm: "TVS MOTOR COMPANY LTD",
         Addr1: "HIMACHAL PRADESH",
-        Addr2: null,
+        Addr2: "HIMACHAL PRADESH",
         Loc: "HIMACHAL PRADESH",
         Pin: 176052,
         Pos: "02",
@@ -259,7 +259,7 @@
         Gstin: "36AAACB5861B1Z1",
         LglNm: "BERAR FINANCE LTD",
         Addr1: "2N, 2, WARANGAL CITY CENTER, MULGU ROAD, INDUSTRIAL ETATE,Hanumakonda",
-        Addr2: null,
+        Addr2: "WARANGAL",
         Loc: "WARANGAL",
         Pin: 503002,
         Pos: "36",
@@ -618,6 +618,7 @@
       let sgstVal = 0;
       let igstVal = 0;
       let totInvVal = 0;
+      let docNumber = document.getElementById("docNo").value.replace(/\s+/g, '').trim();
       const invoice = {
         Version: "1.1",
         TranDtls: {
@@ -629,7 +630,7 @@
         },
         DocDtls: {
           Typ: "INV",
-          No: document.getElementById("docNo").value,
+          No: docNumber,
           Dt: document.getElementById("docDate").value,
         },
         SellerDtls: {
@@ -734,7 +735,7 @@
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        const docNo = document.getElementById("docNo").value || "invoice";
+        const docNo = document.getElementById("docNo").value.replace(/\s+/g, '').trim() || "invoice";
         link.download = `${docNo}.json`;
         document.body.appendChild(link);
         link.click();
