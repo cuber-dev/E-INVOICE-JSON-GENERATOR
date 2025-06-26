@@ -28,7 +28,7 @@ form {
   margin: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 1fr;
   gap: 30px;
   text-align: left;
 }
