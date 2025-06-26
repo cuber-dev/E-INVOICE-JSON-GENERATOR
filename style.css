@@ -1,145 +1,201 @@
- body {
-      font-family: system-ui;
-      background: #020024;
-      background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(36, 36, 143, 1) 35%, rgba(36, 106, 115, 1) 100%);
-      color: #4e4f52;
-      text-align: center;
-    }
+body {
+  font-family: system-ui;
+  background: #020024;
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(36, 36, 143, 1) 35%,
+    rgba(36, 106, 115, 1) 100%
+  );
+  color: #4e4f52;
+  text-align: center;
+}
 
-    h2,
-    h3 {
-      color: white;
-    }
+h2,
+h3 {
+  color: white;
+}
 
-    .seller-details {
-      display: none;
-    }
+.seller-details {
+  display: none;
+}
 
-    form {
-      background-color: #fafafc;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 1300px;
-      margin: auto;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      text-align: left;
-    }
+form {
+  background-color: #fafafc;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 1300px;
+  margin: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  text-align: left;
+}
 
-    .left-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-    .right-panel {
-      display: flex;
-      flex-direction: column;
-    }
+.right-panel {
+  display: flex;
+  flex-direction: column;
+}
 
-    fieldset {
-      border: 1px solid #ddd;
-      padding: 15px;
-      border-radius: 8px;
-      background-color: #fafafc;
-    }
+fieldset {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #fafafc;
+}
 
-    legend {
-      font-weight: bold;
-      color: #5c5c61;
-    }
+legend {
+  font-weight: bold;
+  color: #5c5c61;
+}
 
-    input[type="text"],
-    input[type="number"],
-    select {
-      padding: 8px;
-      margin: .6rem 0;
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
+input[type="text"],
+input[type="number"],
+select {
+  padding: 8px;
+  margin: 0.6rem 0;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
 
-    .item-block {
-      background-color: #fafafc;
-      padding: 15px;
-      border: 1px solid #ccc;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      position: relative;
-    }
+.item-block {
+  background-color: #fafafc;
+  padding: 15px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  position: relative;
+}
 
-    .item-block h4 {
-      margin-top: 0;
-      color: #5c5c61;
-    }
+.item-block h4 {
+  margin-top: 0;
+  color: #5c5c61;
+}
 
-    .delete-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #dc3545;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
+.delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
 
-    .delete-btn:hover {
-      background-color: #b52b37;
-    }
+.delete-btn:hover {
+  background-color: #b52b37;
+}
 
-    button {
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      margin-top: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+button {
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-    button:hover {
-      background-color: #0056b3;
-    }
+button:hover {
+  background-color: #0056b3;
+}
 
-    #output {
-      background-color: #222;
-      color: #0f0;
-      padding: 15px;
-      border-radius: 8px;
-      margin: 20px auto;
-      max-width: 900px;
-      overflow-x: auto;
-      text-align: left;
-    }
+#output {
+  background-color: #222;
+  color: #0f0;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 900px;
+  overflow-x: auto;
+  text-align: left;
+}
 
-    h2.header {
-      margin-top: 20px;
-    }
+h2.header {
+  margin-top: 20px;
+}
 
-    .hidden {
-      display: none;
-    }
+.hidden {
+  display: none;
+}
 
-    .form-button {
-      width: 100%;
-      margin: 1rem 0;
-      padding: 1rem;
-      font-size: 1rem;
-      font-style: bold;
-      border-radius: 10px;
-      background-color: #3b3dc4;
-    }
+.form-button {
+  width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+  font-size: 1rem;
+  font-style: bold;
+  border-radius: 10px;
+  background-color: #3b3dc4;
+}
 
-    .footer {
-      background-color: #222;
-      color: #0f0;
-      width: max-content;
-      margin: auto;
-      padding: .8rem 1.5rem;
-      border-radius: 6px;
-    }
+.footer {
+  background-color: #222;
+  color: #0f0;
+  width: max-content;
+  margin: auto;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+}
+
+/* Scoped styles for the private README */
+.private-readme {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #fff;
+  border: 2px solid #d00;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.private-readme h1 {
+  color: #c00;
+  font-size: 26px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.private-readme blockquote {
+  background-color: #fff3cd;
+  color: #856404;
+  border-left: 5px solid #ffc107;
+  padding: 10px 15px;
+  margin: 15px 0;
+}
+
+.private-readme h2 {
+  color: #004080;
+  margin-top: 30px;
+  font-size: 20px;
+}
+
+.private-readme p,
+.private-readme li {
+  color: #333;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.private-readme ul {
+  padding-left: 20px;
+}
+
+.private-readme footer {
+  margin-top: 30px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
