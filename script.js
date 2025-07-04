@@ -240,13 +240,19 @@ const predefinedItems = {
     isIGST: false,
     IsServc: "N"
   },
-  COMMISION: {
+  "COMMISION LOCAL": {
     desc: "COMMISION",
     hsn: "996211",
     gst: 18,
     isIGST: false,
     IsServc: "Y"
-  },
+  },"COMMISION OUTSTATE": {
+  desc: "COMMISION",
+  hsn: "996211",
+  gst: 18,
+  isIGST: true,
+  IsServc: "Y"
+},
   "FSC CLAIM FROM TVSM": {
     desc: "FSC CLAIM FROM TVSM",
     hsn: "997161",
