@@ -377,7 +377,7 @@ function updateGST(el) {
     totalCgst = 0,
     totalSgst = 0,
     totalAmount = 0;
-  totalGross = 0;
+  totalTaxAmount = 0;
   document.querySelectorAll(".item-block").forEach((item) => {
     totalIgst += parseFloat(item.querySelector(".igstAmt")?.value) || 0;
     totalCgst += parseFloat(item.querySelector(".cgstAmt")?.value) || 0;
@@ -388,8 +388,8 @@ function updateGST(el) {
   document.querySelector("#total-cgst").value = totalCgst.toFixed(2);
   document.querySelector("#total-sgst").value = totalSgst.toFixed(2);
   document.querySelector("#total-amount").value = totalAmount.toFixed(2);
-  totalGross = totalCgst + totalSgst + totalIgst;
-  document.querySelector("#total-gross").value = totalGross.toFixed(2);
+  totalTaxAmount = totalCgst + totalSgst + totalIgst;
+  document.querySelector("#total-tax-amount").value = totalTaxAmount.toFixed(2);
 }
 
 function populateBuyerDetails() {
