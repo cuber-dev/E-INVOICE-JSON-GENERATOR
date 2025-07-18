@@ -246,13 +246,14 @@ const predefinedItems = {
     gst: 18,
     isIGST: false,
     IsServc: "Y"
-  },"COMMISION OUTSTATE": {
-  desc: "COMMISION",
-  hsn: "996211",
-  gst: 18,
-  isIGST: true,
-  IsServc: "Y"
-},
+  },
+  "COMMISION OUTSTATE": {
+    desc: "COMMISION",
+    hsn: "996211",
+    gst: 18,
+    isIGST: true,
+    IsServc: "Y"
+  },
   "FSC CLAIM FROM TVSM": {
     desc: "FSC CLAIM FROM TVSM",
     hsn: "997161",
@@ -353,6 +354,7 @@ function updateGST(el) {
   const sgstField = block.querySelector(".sgstAmt");
   const igstDiv = block.querySelector(".igstDiv");
   const cgstSgstDiv = block.querySelector(".cgstSgstDiv");
+
   let totalVal = total;
   if (igstDiv.style.display !== "none") {
     const igst = (total * gstRate) / 100;
@@ -375,6 +377,7 @@ function updateGST(el) {
     totalCgst = 0,
     totalSgst = 0,
     totalAmount = 0;
+  totalGross = 0;
   document.querySelectorAll(".item-block").forEach((item) => {
     totalIgst += parseFloat(item.querySelector(".igstAmt")?.value) || 0;
     totalCgst += parseFloat(item.querySelector(".cgstAmt")?.value) || 0;
@@ -385,6 +388,8 @@ function updateGST(el) {
   document.querySelector("#total-cgst").value = totalCgst.toFixed(2);
   document.querySelector("#total-sgst").value = totalSgst.toFixed(2);
   document.querySelector("#total-amount").value = totalAmount.toFixed(2);
+  totalGross = totalCgst + totalSgst + totalIgst;
+  document.querySelector("#total-gross").value = totalGross.toFixed(2);
 }
 
 function populateBuyerDetails() {
