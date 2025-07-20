@@ -195,6 +195,19 @@ const buyerMap = {
     Stcd: "36",
     Ph: null,
     Em: null
+  },
+  17: {
+    Gstin: "36AABCT3518Q1ZX",
+    LglNm: "TATA AIG GENERAL INSURANCE CO LTD",
+    Addr1:
+      "Imperial Towers,H.No 7-1-6-617/A,5th and 6th Floor,GHMC no - 615,616, Ameerpet,Hyderabad,500016",
+    Addr2: "Hyderabad",
+    Loc: "Hyderabad",
+    Pin: 500016,
+    Pos: "36",
+    Stcd: "36",
+    Ph: null,
+    Em: null
   }
 };
 const predefinedItems = {
