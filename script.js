@@ -208,6 +208,18 @@ const buyerMap = {
     Stcd: "36",
     Ph: null,
     Em: null
+  },
+  18: {
+    Gstin: "36AAYCA8340E1ZC",
+    LglNm: "ANTARIKSH MOTORS PRIVATE LIMITED",
+    Addr1: "8-1-351/a/11, RAHUL COLONY,Tolichowki Road,Hyderabad,500008",
+    Addr2: "Hyderabad",
+    Loc: "Hyderabad",
+    Pin: 500008,
+    Pos: "36",
+    Stcd: "36",
+    Ph: null,
+    Em: null
   }
 };
 const predefinedItems = {
