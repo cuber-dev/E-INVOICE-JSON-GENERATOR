@@ -403,12 +403,15 @@ function updateGST(el) {
     totalSgst = 0,
     totalAmount = 0;
   totalTaxAmount = 0;
+  totalTaxable = 0;
   document.querySelectorAll(".item-block").forEach((item) => {
+    totalTaxable += parseFloat(item.querySelector(".unitPrice")?.value) || 0;
     totalIgst += parseFloat(item.querySelector(".igstAmt")?.value) || 0;
     totalCgst += parseFloat(item.querySelector(".cgstAmt")?.value) || 0;
     totalSgst += parseFloat(item.querySelector(".sgstAmt")?.value) || 0;
     totalAmount += parseFloat(item.querySelector(".totItemVal")?.value) || 0;
   });
+  document.querySelector("#total-taxable").value = totalTaxable.toFixed(2);
   document.querySelector("#total-igst").value = totalIgst.toFixed(2);
   document.querySelector("#total-cgst").value = totalCgst.toFixed(2);
   document.querySelector("#total-sgst").value = totalSgst.toFixed(2);
