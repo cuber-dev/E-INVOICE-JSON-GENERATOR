@@ -435,7 +435,8 @@ function populateBuyerDetails() {
 
 function buildBuyerDropdown() {
   const buyerSelector = document.getElementById("buyerSelector");
-  buyerSelector.innerHTML = ""; // Clear existing options
+  buyerSelector.innerHTML = ""; 
+// Clear existing options
   for (const key in buyerMap) {
     const buyer = buyerMap[key];
     const option = document.createElement("option");
@@ -443,6 +444,15 @@ function buildBuyerDropdown() {
     option.textContent = `${buyer.Gstin} - ${buyer.LglNm}`;
     buyerSelector.appendChild(option);
   }
+  const bulkBuyer = document.getElementById("bulkBuyerSelect");
+      bulkBuyer.innerHTML = "";
+  for (const key in buyerMap) {
+  const buyer = buyerMap[key];
+  const option2 = document.createElement("option");
+  option2.value = key;
+  option2.textContent = `${buyer.Gstin} - ${buyer.LglNm}`;
+  bulkBuyer.appendChild(option2);
+}
 }
 
 function generateJSON() {
@@ -597,3 +607,108 @@ window.onload = () => {
   const formattedDate = `${day}/${month}/${year}`;
   document.getElementById("docDate").value = formattedDate;
 };
+
+
+function generateBulkInvoices() {
+  const fileInput = document.getElementById("csvFile").files[0];
+  if (!fileInput) {
+    alert("Please upload a CSV file first!");
+    return;
+  }
+
+  // ✅ Buyer details from bulk selector
+  const buyerId = document.getElementById("bulkBuyerSelect").value;
+  const buyerDetails = buyerMap[buyerId];
+  if (!buyerDetails) {
+    alert("Please select a buyer from Bulk Buyer dropdown!");
+    return;
+  }
+
+  // Seller details from UI
+  const sellerStcd = document.getElementById("sellerStcd").value;
+  const sellerGstin = document.getElementById("sellerGstin").value;
+
+  Papa.parse(fileInput, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      const data = results.data;
+      const zip = new JSZip();
+
+      data.forEach((row, index) => {
+        const taxable = parseFloat(row["taxable"]) || 0;
+        const gstRate = parseFloat(row["percentage"]) || 0;
+
+        // GST calculation
+        let cgst = 0, sgst = 0, igst = 0;
+        let total = taxable;
+        if (sellerStcd === buyerDetails.Stcd) {
+          cgst = +(taxable * (gstRate / 200)).toFixed(2);
+          sgst = +(taxable * (gstRate / 200)).toFixed(2);
+          total += cgst + sgst;
+        } else {
+          igst = +(taxable * (gstRate / 100)).toFixed(2);
+          total += igst;
+        }
+
+        const invoiceNo = `INV${index + 1}`;
+
+        const invoice = {
+          Version: "1.1",
+          TranDtls: {
+            TaxSch: "GST",
+            SupTyp: "B2B",
+            IgstOnIntra: "N",
+            RegRev: "N",
+            EcmGstin: null
+          },
+          DocDtls: {
+            Typ: "INV",
+            No: invoiceNo,
+            Dt: row["invDate"]
+          },
+          SellerDtls: {
+            Gstin: sellerGstin,
+            LglNm: document.getElementById("sellerName").value,
+            Addr1: document.getElementById("sellerAddr1").value,
+            Loc: document.getElementById("sellerLoc").value,
+            Pin: parseInt(document.getElementById("sellerPin").value),
+            Stcd: sellerStcd,
+            Ph: document.getElementById("sellerPh").value
+          },
+          BuyerDtls: buyerDetails,  // ✅ pulled from bulkBuyerSelect
+          ValDtls: {
+            AssVal: taxable,
+            IgstVal: igst,
+            CgstVal: cgst,
+            SgstVal: sgst,
+            TotInvVal: total
+          },
+          ItemList: [
+            {
+              SlNo: "1",
+              PrdDesc: row["description"],
+              HsnCd: row["hsn"] || "0000",
+              Qty: 1,
+              Unit: "NOS",
+              UnitPrice: taxable,
+              AssAmt: taxable,
+              GstRt: gstRate,
+              IgstAmt: igst,
+              CgstAmt: cgst,
+              SgstAmt: sgst,
+              TotItemVal: total,
+              IsServc: "N"
+            }
+          ]
+        };
+
+        zip.file(`${invoiceNo}.json`, JSON.stringify([invoice], null, 2));
+      });
+
+      zip.generateAsync({ type: "blob" }).then(function(content) {
+        saveAs(content, "bulk_invoices.zip");
+      });
+    }
+  });
+}

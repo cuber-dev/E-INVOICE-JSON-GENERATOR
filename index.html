@@ -29,7 +29,9 @@
   <meta property="og:site_name" content="Laxmi Auto Agencies" />
   <meta property="og:image:alt" content="Laxmi Auto Agencies E-Invoice preview" />
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
   <!-- Styles & scripts -->
   <link rel="stylesheet" href="style.css" />
@@ -96,8 +98,39 @@
       </div>
     </fieldset>
   </form>
-
-  <h3>Output JSON:</h3>
+<!-- Bulk Upload Card -->
+<section class="card bulk-card" role="region" aria-labelledby="bulk-title">
+  <header class="card-header">
+    <h3 id="bulk-title">Bulk Invoice Upload</h3>
+    <p class="card-subtitle">Upload a CSV with <code>invDate, description, taxable, percentage</code></p>
+  </header>
+  
+  <div class="card-body">
+    <div class="field">
+      <label for="buyerSelect">Buyer (applies to all rows)</label>
+      <select id="bulkBuyerSelect"></select>
+    </div>
+    
+    <div class="field">
+      <label for="csvFile">CSV File</label>
+      <div class="dropzone" id="csvDrop">
+        <input type="file" id="csvFile" accept=".csv" />
+        <span>Drag & drop CSV here, or click to browse</span>
+      </div>
+    </div>
+    
+    <details class="hint">
+      <summary>CSV format help</summary>
+      <pre>invDate,description,taxable,percentage
+16/08/2025,BATTERY,4000,18</pre>
+    </details>
+  </div>
+  
+  <footer class="card-footer">
+    <button type="button" class="btn" onclick="generateBulkInvoices()">Generate ZIP</button>
+  </footer>
+</section>
+<h3>Output JSON:</h3>
   <pre id="output">NO DATA TO DISPLAY!</pre>
 
   <!-- Dedicated Container -->
