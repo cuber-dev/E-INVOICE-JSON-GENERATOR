@@ -616,7 +616,6 @@ function generateBulkInvoices() {
     return;
   }
 
-  // ✅ Buyer details from bulk selector
   const buyerId = document.getElementById("bulkBuyerSelect").value;
   const buyerDetails = buyerMap[buyerId];
   if (!buyerDetails) {
@@ -624,7 +623,6 @@ function generateBulkInvoices() {
     return;
   }
 
-  // Seller details from UI
   const sellerStcd = document.getElementById("sellerStcd").value;
   const sellerGstin = document.getElementById("sellerGstin").value;
 
@@ -635,38 +633,66 @@ function generateBulkInvoices() {
       const data = results.data;
       const zip = new JSZip();
 
-      data.forEach((row, index) => {
-        const taxable = parseFloat(row["taxable"]) || 0;
-        const gstRate = parseFloat(row["percentage"]) || 0;
+      // Group rows by invNo
+      const invoiceGroups = {};
+      data.forEach(row => {
+        const invNo = row["invNo"];
+        if (!invoiceGroups[invNo]) invoiceGroups[invNo] = [];
+        invoiceGroups[invNo].push(row);
+      });
 
-        // GST calculation
-        let cgst = 0, sgst = 0, igst = 0;
-        let total = taxable;
-        if (sellerStcd === buyerDetails.Stcd) {
-          cgst = +(taxable * (gstRate / 200)).toFixed(2);
-          sgst = +(taxable * (gstRate / 200)).toFixed(2);
-          total += cgst + sgst;
-        } else {
-          igst = +(taxable * (gstRate / 100)).toFixed(2);
-          total += igst;
-        }
+      // Process each invoice
+      Object.keys(invoiceGroups).forEach((invNo, idx) => {
+        const rows = invoiceGroups[invNo];
 
-        const invoiceNo = `INV${index + 1}`;
+        let assVal = 0, cgst = 0, sgst = 0, igst = 0, total = 0;
+        const itemList = [];
+
+        rows.forEach((row, i) => {
+          const taxable = parseFloat(row["taxable"]) || 0;
+          const gstRate = parseFloat(row["percentage"]) || 0;
+
+          let itemCgst = 0, itemSgst = 0, itemIgst = 0;
+          let itemTotal = taxable;
+
+          if (sellerStcd === buyerDetails.Stcd) {
+            itemCgst = +(taxable * (gstRate / 200)).toFixed(2);
+            itemSgst = +(taxable * (gstRate / 200)).toFixed(2);
+            itemTotal += itemCgst + itemSgst;
+          } else {
+            itemIgst = +(taxable * (gstRate / 100)).toFixed(2);
+            itemTotal += itemIgst;
+          }
+
+          // Push item to ItemList
+          itemList.push({
+            SlNo: (i + 1).toString(),
+            PrdDesc: row["description"],
+            HsnCd: row["hsn"] || "0000",
+            Qty: 1,
+            Unit: "NOS",
+            UnitPrice: taxable,
+            AssAmt: taxable,
+            GstRt: gstRate,
+            IgstAmt: itemIgst,
+            CgstAmt: itemCgst,
+            SgstAmt: itemSgst,
+            TotItemVal: itemTotal,
+            IsServc: row["isService"] || "N"
+          });
+
+          // Add to totals
+          assVal += taxable;
+          cgst += itemCgst;
+          sgst += itemSgst;
+          igst += itemIgst;
+          total += itemTotal;
+        });
 
         const invoice = {
           Version: "1.1",
-          TranDtls: {
-            TaxSch: "GST",
-            SupTyp: "B2B",
-            IgstOnIntra: "N",
-            RegRev: "N",
-            EcmGstin: null
-          },
-          DocDtls: {
-            Typ: "INV",
-            No: invoiceNo,
-            Dt: row["invDate"]
-          },
+          TranDtls: { TaxSch: "GST", SupTyp: "B2B", IgstOnIntra: "N", RegRev: "N", EcmGstin: null },
+          DocDtls: { Typ: "INV", No: invNo, Dt: rows[0]["invDate"] },
           SellerDtls: {
             Gstin: sellerGstin,
             LglNm: document.getElementById("sellerName").value,
@@ -676,37 +702,21 @@ function generateBulkInvoices() {
             Stcd: sellerStcd,
             Ph: document.getElementById("sellerPh").value
           },
-          BuyerDtls: buyerDetails,  // ✅ pulled from bulkBuyerSelect
+          BuyerDtls: buyerDetails,
           ValDtls: {
-            AssVal: taxable,
+            AssVal: assVal,
             IgstVal: igst,
             CgstVal: cgst,
             SgstVal: sgst,
             TotInvVal: total
           },
-          ItemList: [
-            {
-              SlNo: "1",
-              PrdDesc: row["description"],
-              HsnCd: row["hsn"] || "0000",
-              Qty: 1,
-              Unit: "NOS",
-              UnitPrice: taxable,
-              AssAmt: taxable,
-              GstRt: gstRate,
-              IgstAmt: igst,
-              CgstAmt: cgst,
-              SgstAmt: sgst,
-              TotItemVal: total,
-              IsServc:row["isService"] || "N"
-            }
-          ]
+          ItemList: itemList
         };
 
-        zip.file(`${invoiceNo}.json`, JSON.stringify([invoice], null, 2));
+        zip.file(`${invNo}.json`, JSON.stringify([invoice], null, 2));
       });
 
-      zip.generateAsync({ type: "blob" }).then(function(content) {
+      zip.generateAsync({ type: "blob" }).then(content => {
         saveAs(content, "bulk_invoices.zip");
       });
     }
