@@ -112,13 +112,21 @@
       <select id="bulkBuyerSelect"></select>
     </div>
     
-    <div class="field">
-      <label for="csvFile">CSV File</label>
-      <div class="dropzone" id="csvDrop">
-        <input type="file" id="csvFile" accept=".csv" />
-        <span>Drag & drop CSV here, or click to browse</span>
-      </div>
-    </div>
+   <div class="field">
+  <label for="csvFile">CSV File</label>
+  
+  <!-- Dropzone -->
+  <div class="dropzone" id="csvDrop">
+    <input type="file" id="csvFile" accept=".csv" />
+    <span>Drag & drop CSV here, or click to browse</span>
+  </div>
+  
+  <!-- File info row (hidden by default) -->
+  <div id="fileInfo" class="file-info" style="display:none;">
+    <span id="fileName"></span>
+    <button id="removeFile" type="button" class="remove-btn">x</button>
+  </div>
+</div>
     
 <details class="hint">
   <summary>CSV format help</summary>

@@ -722,3 +722,25 @@ function generateBulkInvoices() {
     }
   });
 }
+
+
+const csvFileInput = document.getElementById("csvFile");
+const csvDrop = document.getElementById("csvDrop");
+const fileInfo = document.getElementById("fileInfo");
+const fileName = document.getElementById("fileName");
+const removeFileBtn = document.getElementById("removeFile");
+
+csvFileInput.addEventListener("change", function() {
+  if (this.files.length > 0) {
+    const file = this.files[0];
+    fileName.textContent = file.name;
+    csvDrop.style.display = "none"; // hide dropzone
+    fileInfo.style.display = "flex"; // show file info row
+  }
+});
+
+removeFileBtn.addEventListener("click", function() {
+  csvFileInput.value = ""; // clear file
+  fileInfo.style.display = "none"; // hide file row
+  csvDrop.style.display = "block"; // show dropzone again
+});

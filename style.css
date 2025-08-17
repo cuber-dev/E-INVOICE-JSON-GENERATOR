@@ -299,3 +299,29 @@ h2.header {
   margin: .5rem 0 0; background: var(--bg-color); border: 1px solid var(--border-color);
   border-radius: 8px; padding: .75rem; color: var(--text-color);
 }
+
+
+.file-info {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: var(--card-bg, #f9f9f9);
+  border: 1px solid var(--border, #ddd);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.file-info span {
+  font-weight: 500;
+  color: var(--text-color, #333);
+}
+
+.remove-btn {
+  background: var(--danger-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
