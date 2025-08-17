@@ -32,7 +32,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-
+<!-- Add this before your script.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <!-- Styles & scripts -->
   <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
@@ -119,11 +120,10 @@
       </div>
     </div>
     
-    <details class="hint">
-      <summary>CSV format help</summary>
-      <pre>invDate,description,taxable,percentage
-16/08/2025,BATTERY,4000,18</pre>
-    </details>
+<details class="hint">
+  <summary>CSV format help</summary>
+  <a href="bulk_invoice_format.csv" download="bulk_invoice_format.csv">📥 Download Sample CSV</a>
+</details>
   </div>
   
   <footer class="card-footer">

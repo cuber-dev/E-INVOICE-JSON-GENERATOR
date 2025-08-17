@@ -698,7 +698,7 @@ function generateBulkInvoices() {
               CgstAmt: cgst,
               SgstAmt: sgst,
               TotItemVal: total,
-              IsServc: "N"
+              IsServc:row["isService"] || "N"
             }
           ]
         };
