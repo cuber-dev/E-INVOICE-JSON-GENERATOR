@@ -39,36 +39,33 @@
 /* Dropdown */
 .theme-options {
   position: absolute;
-  top: 110%;   /* Just below the button */
+  top: 110%;   /* Below button */
   right: 0;
   display: flex;
   flex-direction: column;
-  min-width: 160px;
+  min-width: 200px;
+  padding: .2rem .5rem;
+  max-height: 400px;       /* 👈 Limit height */
+  overflow-y: auto;        /* 👈 Enable scroll */
   background: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  overflow: hidden;
+  scrollbar-width: thin;         /* Firefox */
+  scrollbar-color: var(--accent-color) var(--secondary-color);
 }
 
-.theme-options.hidden {
-  display: none;
+/* Chrome, Edge, Safari custom scrollbar */
+.theme-options::-webkit-scrollbar {
+  width: 8px;
 }
-
-/* Each option */
-.theme-options button {
-  background: none;
-  border: none;
-  padding: 10px 14px;
-  text-align: left;
-  font-size: 14px;
-  cursor: pointer;
-  color: var(--text-color);
-  transition: background 0.2s ease;
-}
-
-.theme-options button:hover {
+.theme-options::-webkit-scrollbar-track {
   background: var(--secondary-color);
+  border-radius: 10px;
+}
+.theme-options::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 10px;
 }
 body {
   font-family: system-ui;
