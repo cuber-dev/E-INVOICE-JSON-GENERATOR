@@ -8,6 +8,68 @@
   --bg-color: #ffffff;        /* White background */
   --danger-color: #dc2626;    /* Red for delete/danger */
 }
+/* Wrapper */
+.theme-selector {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: inherit;
+}
+
+/* Main button */
+#themeBtn {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background 0.2s ease;
+}
+
+#themeBtn:hover {
+  background: var(--hover-color);
+  color: #fff;
+}
+
+/* Dropdown */
+.theme-options {
+  position: absolute;
+  top: 110%;   /* Just below the button */
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.theme-options.hidden {
+  display: none;
+}
+
+/* Each option */
+.theme-options button {
+  background: none;
+  border: none;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: background 0.2s ease;
+}
+
+.theme-options button:hover {
+  background: var(--secondary-color);
+}
 body {
   font-family: system-ui;
   background: linear-gradient(
@@ -22,7 +84,14 @@ body {
 
 h2,
 h3 {
-  color: var(--bg-color);
+  color: var(--text-color);
+}
+.header{
+  background: var(--bg-color);
+  border-radius: .5rem;
+  padding: 1rem 1.5rem;
+  width: max-content;
+  margin: 2rem auto;
 }
 
 .seller-details {
