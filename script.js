@@ -304,6 +304,13 @@ const predefinedItems = {
     gst: 18,
     isIGST: false,
     IsServc: "Y"
+  },
+  "INCENTIVE FROM TVSM COMPANY":{
+    desc: "INCENTIVE FROM TVSM COMPANY",
+    hsn: "9983",
+    gst: 18,
+    isIGST: true,
+    IsServc: "Y"
   }
 };
 
