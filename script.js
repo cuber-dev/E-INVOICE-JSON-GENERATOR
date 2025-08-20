@@ -224,7 +224,7 @@ const buyerMap = {
   19: {
   Gstin: "36AAACS7032B1ZT",
   LglNm: "TVS MOTOR COMPANY LTD",
-  Addr1: "FIRST FLOOR,2-11-30, PLOT NO-11,RUKMINI TOWER,PAIGHA COLONY,BEHIND ANAND THETRE, SECUNDRABAD, HYDERABAD",
+  Addr1: "FIRST FLOOR,2-11-30,PLOT NO-11,RUKMINI TOWER,PAIGHA COLONY,SECUNDRABAD",
   Addr2: "Hyderabad",
   Loc: "Hyderabad",
   Pin: 500003,
@@ -305,7 +305,14 @@ const predefinedItems = {
     isIGST: false,
     IsServc: "Y"
   },
-  "INCENTIVE FROM TVSM COMPANY":{
+  "INCENTIVE FROM TVSM COMPANY (local)":{
+    desc: "INCENTIVE FROM TVSM COMPANY",
+    hsn: "9983",
+    gst: 18,
+    isIGST: false,
+    IsServc: "Y"
+  },
+    "INCENTIVE FROM TVSM COMPANY (outstate)": {
     desc: "INCENTIVE FROM TVSM COMPANY",
     hsn: "9983",
     gst: 18,
