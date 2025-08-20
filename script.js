@@ -220,7 +220,19 @@ const buyerMap = {
     Stcd: "36",
     Ph: null,
     Em: null
-  }
+  },
+  19: {
+  Gstin: "36AAACS7032B1ZT",
+  LglNm: "TVS MOTOR COMPANY LTD",
+  Addr1: "FIRST FLOOR,2-11-30, PLOT NO-11,RUKMINI TOWER,PAIGHA COLONY,BEHIND ANAND THETRE, SECUNDRABAD, HYDERABAD",
+  Addr2: "Hyderabad",
+  Loc: "Hyderabad",
+  Pin: 500003,
+  Pos: "36",
+  Stcd: "36",
+  Ph: null,
+  Em: null
+}
 };
 const predefinedItems = {
   WARRANTY: {
