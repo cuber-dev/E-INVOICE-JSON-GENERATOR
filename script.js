@@ -650,7 +650,6 @@ window.onload = () => {
   document.getElementById("docDate").value = formattedDate;
 };
 
-/*
 function generateBulkInvoices() {
   const fileInput = document.getElementById("csvFile").files[0];
   if (!fileInput) {
@@ -660,10 +659,15 @@ function generateBulkInvoices() {
 
   const buyerId = document.getElementById("bulkBuyerSelect").value;
   const buyerDetails = buyerMap[buyerId];
+  if (buyerDetails.Gstin === "Select") {
+  alert("please select the buyer")
+  return;
   if (!buyerDetails) {
     alert("Please select a buyer from Bulk Buyer dropdown!");
     return;
   }
+  
+}
 
   const sellerStcd = document.getElementById("sellerStcd").value;
   const sellerGstin = document.getElementById("sellerGstin").value;
@@ -765,8 +769,8 @@ function generateBulkInvoices() {
   });
 }
 
-*/
-
+/*
+// not working 
 async function generateBulkInvoices() {
   const fileInput = document.getElementById("csvFile").files[0];
   if (!fileInput) {
@@ -934,6 +938,7 @@ async function generateBulkInvoices() {
     }
   });
 }
+*/
 const csvFileInput = document.getElementById("csvFile");
 const csvDrop = document.getElementById("csvDrop");
 const fileInfo = document.getElementById("fileInfo");
