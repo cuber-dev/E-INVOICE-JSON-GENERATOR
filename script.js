@@ -634,7 +634,7 @@ window.onload = () => {
   document.getElementById("docDate").value = formattedDate;
 };
 
-
+/*
 function generateBulkInvoices() {
   const fileInput = document.getElementById("csvFile").files[0];
   if (!fileInput) {
@@ -749,7 +749,147 @@ function generateBulkInvoices() {
   });
 }
 
+*/
+function generateBulkInvoices() {
+  const fileInput = document.getElementById("csvFile").files[0];
+  if (!fileInput) {
+    alert("Please upload a CSV file first!");
+    return;
+  }
 
+  const buyerId = document.getElementById("bulkBuyerSelect").value;
+  const buyerDetails = buyerMap[buyerId];
+  if (!buyerDetails) {
+    alert("Please select a buyer from Bulk Buyer dropdown!");
+    return;
+  }
+
+  const sellerStcd = document.getElementById("sellerStcd").value;
+  const sellerGstin = document.getElementById("sellerGstin").value;
+
+  Papa.parse(fileInput, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function (results) {
+      const data = results.data;
+      const zip = new JSZip();
+
+      // Group rows by invNo
+      const invoiceGroups = {};
+      data.forEach(row => {
+        const invNo = row["invNo"];
+        if (!invoiceGroups[invNo]) invoiceGroups[invNo] = [];
+        invoiceGroups[invNo].push(row);
+      });
+
+      // Collect invoices into array
+      const allInvoices = [];
+
+      Object.keys(invoiceGroups).forEach(invNo => {
+        const rows = invoiceGroups[invNo];
+
+        let assVal = 0, cgst = 0, sgst = 0, igst = 0, total = 0;
+        const itemList = [];
+
+        rows.forEach((row, i) => {
+          const taxable = parseFloat(row["taxable"]) || 0;
+          const gstRate = parseFloat(row["percentage"]) || 0;
+
+          let itemCgst = 0, itemSgst = 0, itemIgst = 0;
+          let itemTotal = taxable;
+
+          if (sellerStcd === buyerDetails.Stcd) {
+            itemCgst = +(taxable * (gstRate / 200)).toFixed(2);
+            itemSgst = +(taxable * (gstRate / 200)).toFixed(2);
+            itemTotal += itemCgst + itemSgst;
+          } else {
+            itemIgst = +(taxable * (gstRate / 100)).toFixed(2);
+            itemTotal += itemIgst;
+          }
+
+          itemList.push({
+            SlNo: (i + 1).toString(),
+            PrdDesc: row["description"],
+            HsnCd: row["hsn"] || "0000",
+            Qty: 1,
+            Unit: "NOS",
+            UnitPrice: taxable,
+            AssAmt: taxable,
+            GstRt: gstRate,
+            IgstAmt: itemIgst,
+            CgstAmt: itemCgst,
+            SgstAmt: itemSgst,
+            TotItemVal: itemTotal,
+            IsServc: row["isService"] || "N"
+          });
+
+          assVal += taxable;
+          cgst += itemCgst;
+          sgst += itemSgst;
+          igst += itemIgst;
+          total += itemTotal;
+        });
+
+        const invoice = {
+          Version: "1.1",
+          TranDtls: { TaxSch: "GST", SupTyp: "B2B", IgstOnIntra: "N", RegRev: "N", EcmGstin: null },
+          DocDtls: { Typ: "INV", No: invNo, Dt: rows[0]["invDate"] },
+          SellerDtls: {
+            Gstin: sellerGstin,
+            LglNm: document.getElementById("sellerName").value,
+            Addr1: document.getElementById("sellerAddr1").value,
+            Loc: document.getElementById("sellerLoc").value,
+            Pin: parseInt(document.getElementById("sellerPin").value),
+            Stcd: sellerStcd,
+            Ph: document.getElementById("sellerPh").value
+          },
+          BuyerDtls: buyerDetails,
+          ValDtls: {
+            AssVal: assVal,
+            IgstVal: igst,
+            CgstVal: cgst,
+            SgstVal: sgst,
+            TotInvVal: total
+          },
+          ItemList: itemList
+        };
+
+        allInvoices.push(invoice);
+      });
+
+      // Now split into chunks under 2MB
+      let currentChunk = [];
+      let currentSize = 0;
+      let fileIndex = 1;
+
+      allInvoices.forEach(inv => {
+        const invStr = JSON.stringify(inv);
+        const invSize = new Blob([invStr]).size;
+
+        if (currentSize + invSize > 1800000 && currentChunk.length > 0) {
+          // Save current chunk
+          zip.file(`bulk_invoices_${fileIndex}.json`, JSON.stringify(currentChunk, null, 2));
+          fileIndex++;
+          currentChunk = [];
+          currentSize = 0;
+        }
+
+        currentChunk.push(inv);
+        currentSize += invSize;
+      });
+
+      // Save last chunk
+      if (currentChunk.length > 0) {
+        zip.file(`bulk_invoices_${fileIndex}.json`, JSON.stringify(currentChunk, null, 2));
+      }
+
+      // Export zip
+      zip.generateAsync({ type: "blob" }).then(content => {
+        saveAs(content, "bulk_invoices.zip");
+      });
+    }
+  });
+}
 const csvFileInput = document.getElementById("csvFile");
 const csvDrop = document.getElementById("csvDrop");
 const fileInfo = document.getElementById("fileInfo");
