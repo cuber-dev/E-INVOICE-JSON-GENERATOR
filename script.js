@@ -1,5 +1,17 @@
 let itemCount = 0;
 const buyerMap = {
+  0: {
+  Gstin: "Select",
+  LglNm: "Please select the buyer",
+  Addr1: null,
+  Addr2: null,
+  Loc: null,
+  Pin: null,
+  Pos: null,
+  Stcd: null,
+  Ph: null,
+  Em: null
+},
   1: {
     Gstin: "33AAACS7032B1ZZ",
     LglNm: "TVS MOTOR COMPANY LTD",
@@ -482,6 +494,10 @@ function buildBuyerDropdown() {
 }
 
 function generateJSON() {
+  if(document.getElementById("buyerGstin").value === "Select") {
+    alert("please select the buyer")
+    return;
+  }
   let assVal = 0;
   let cgstVal = 0;
   let sgstVal = 0;
@@ -750,7 +766,8 @@ function generateBulkInvoices() {
 }
 
 */
-function generateBulkInvoices() {
+async function generateBulkInvoices() {
+  
   const fileInput = document.getElementById("csvFile").files[0];
   if (!fileInput) {
     alert("Please upload a CSV file first!");
@@ -759,11 +776,16 @@ function generateBulkInvoices() {
   
   const buyerId = document.getElementById("bulkBuyerSelect").value;
   const buyerDetails = buyerMap[buyerId];
+  if (buyerDetails.gstin === "Select") {
+  alert("please select the buyer")
+  return;
+}
   if (!buyerDetails) {
     alert("Please select a buyer from Bulk Buyer dropdown!");
     return;
   }
   
+  // Seller details
   const sellerStcd = document.getElementById("sellerStcd").value;
   const sellerGstin = document.getElementById("sellerGstin").value;
   const sellerName = document.getElementById("sellerName").value;
@@ -773,7 +795,7 @@ function generateBulkInvoices() {
   const sellerPh = document.getElementById("sellerPh").value;
   
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = async function(e) {
     const csvText = e.target.result;
     const rows = csvText.trim().split("\n").map(r => r.split(","));
     const header = rows[0].map(h => h.trim());
@@ -781,11 +803,10 @@ function generateBulkInvoices() {
     
     const invoicesMap = {};
     
+    // Build invoices
     data.forEach(row => {
       let obj = {};
-      header.forEach((h, i) => {
-        obj[h] = row[i] ? row[i].trim() : "";
-      });
+      header.forEach((h, i) => obj[h] = row[i] ? row[i].trim() : "");
       
       const invoiceNo = obj.InvoiceNo;
       if (!invoiceNo) return;
@@ -802,7 +823,7 @@ function generateBulkInvoices() {
           },
           DocDtls: {
             Typ: obj.DocTyp || "INV",
-            No: obj.InvoiceNo,
+            No: invoiceNo,
             Dt: obj.InvDate
           },
           SellerDtls: {
@@ -837,7 +858,7 @@ function generateBulkInvoices() {
         };
       }
       
-      // Add line item
+      // Add line item if available
       if (obj.PrdDesc && obj.Taxable) {
         const item = {
           SlNo: invoicesMap[invoiceNo].ItemList.length + 1,
@@ -869,21 +890,22 @@ function generateBulkInvoices() {
       }
     });
     
-    // Convert invoicesMap to array
+    // Convert invoices to array
     const allInvoices = Object.values(invoicesMap);
     
-    // Split into multiple JSON files (<2MB each)
+    // Prepare zip
+    const zip = new JSZip();
     let currentBatch = [];
     let currentSize = 0;
     let fileIndex = 1;
-    const zip = new JSZip();
+    const MAX_SIZE = 2 * 1024 * 1024; // 2MB
     
     allInvoices.forEach(inv => {
       const invStr = JSON.stringify(inv);
       const invSize = new Blob([invStr]).size;
       
-      if (currentSize + invSize > 2 * 1024 * 1024) {
-        // Save current batch to zip
+      if (currentSize + invSize > MAX_SIZE) {
+        // save batch
         zip.file(`Invoices_Part${fileIndex}.json`, JSON.stringify(currentBatch, null, 2));
         fileIndex++;
         currentBatch = [];
@@ -898,15 +920,14 @@ function generateBulkInvoices() {
       zip.file(`Invoices_Part${fileIndex}.json`, JSON.stringify(currentBatch, null, 2));
     }
     
-    // Generate and download ZIP
-    zip.generateAsync({ type: "blob" }).then(content => {
-      const url = URL.createObjectURL(content);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "Invoices.zip";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
+    // Download ZIP
+    const content = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(content);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Invoices.zip";
+    a.click();
+    URL.revokeObjectURL(url);
   };
   
   reader.readAsText(fileInput);
