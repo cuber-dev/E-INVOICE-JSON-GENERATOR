@@ -782,19 +782,26 @@ function generateBulkInvoices() {
         invoiceGroups[invNo].push(row);
       });
 
-      // Collect invoices into array
-      const allInvoices = [];
+      let currentBatch = [];
+      let fileIndex = 1;
 
+      function saveBatch() {
+        if (currentBatch.length > 0) {
+          zip.file(`bulk_invoices_${fileIndex}.json`, JSON.stringify(currentBatch, null, 2));
+          fileIndex++;
+          currentBatch = [];
+        }
+      }
+
+      // Process each invoice
       Object.keys(invoiceGroups).forEach(invNo => {
         const rows = invoiceGroups[invNo];
-
         let assVal = 0, cgst = 0, sgst = 0, igst = 0, total = 0;
         const itemList = [];
 
         rows.forEach((row, i) => {
-          // ✅ Clean numbers (remove commas, trim spaces)
-          const taxable = parseFloat((row["taxable"] || "0").toString().replace(/,/g, "").trim()) || 0;
-          const gstRate = parseFloat((row["percentage"] || "0").toString().replace(/,/g, "").trim()) || 0;
+          const taxable = parseFloat(row["taxable"]) || 0;
+          const gstRate = parseFloat(row["percentage"]) || 0;
 
           let itemCgst = 0, itemSgst = 0, itemIgst = 0;
           let itemTotal = taxable;
@@ -812,14 +819,25 @@ function generateBulkInvoices() {
             SlNo: (i + 1).toString(),
             PrdDesc: row["description"],
             HsnCd: row["hsn"] || "0000",
-            Qty: 1,
-            Unit: "NOS",
+            Qty: row["qty"] || 1,
+            FreeQty: 0,
+            Unit: row["unit"] || "NOS",
             UnitPrice: taxable,
+            TotAmt: taxable,
+            Discount: 0,
+            PreTaxVal: 0,
             AssAmt: taxable,
             GstRt: gstRate,
             IgstAmt: itemIgst,
             CgstAmt: itemCgst,
             SgstAmt: itemSgst,
+            CesRt: 0,
+            CesAmt: 0,
+            CesNonAdvlAmt: 0,
+            StateCesRt: 0,
+            StateCesAmt: 0,
+            StateCesNonAdvlAmt: 0,
+            OthChrg: 0,
             TotItemVal: itemTotal,
             IsServc: row["isService"] || "N"
           });
@@ -839,10 +857,12 @@ function generateBulkInvoices() {
             Gstin: sellerGstin,
             LglNm: document.getElementById("sellerName").value,
             Addr1: document.getElementById("sellerAddr1").value,
+            Addr2: null,
             Loc: document.getElementById("sellerLoc").value,
             Pin: parseInt(document.getElementById("sellerPin").value),
             Stcd: sellerStcd,
-            Ph: document.getElementById("sellerPh").value
+            Ph: document.getElementById("sellerPh").value,
+            Em: null
           },
           BuyerDtls: buyerDetails,
           ValDtls: {
@@ -850,50 +870,31 @@ function generateBulkInvoices() {
             IgstVal: igst,
             CgstVal: cgst,
             SgstVal: sgst,
+            CesVal: 0,
+            StCesVal: 0,
+            Discount: 0,
+            OthChrg: 0,
+            RndOffAmt: 0,
             TotInvVal: total
           },
+          RefDtls: { InvRm: "NICGEPP2.0" },
           ItemList: itemList
         };
 
-        allInvoices.push(invoice);
-      });
+        currentBatch.push(invoice);
 
-      console.log(`✅ Parsed invoices: ${allInvoices.length}`);
-
-      // ✅ Split into multiple JSON files under 2MB
-      let currentChunk = [];
-      let currentSize = 0;
-      let fileIndex = 1;
-
-      allInvoices.forEach(inv => {
-        const invStr = JSON.stringify(inv);
-        const invSize = new Blob([invStr]).size;
-
-        if (currentSize + invSize > 1800000 && currentChunk.length > 0) {
-          const jsonStr = JSON.stringify(currentChunk, null, 2);
-          const sizeKB = (new Blob([jsonStr]).size / 1024).toFixed(2);
-          console.log(`📦 bulk_invoices_${fileIndex}.json → ${sizeKB} KB`);
-          zip.file(`bulk_invoices_${fileIndex}.json`, jsonStr);
-          fileIndex++;
-          currentChunk = [];
-          currentSize = 0;
+        // Check size → flush if > 2MB
+        const currentSize = new Blob([JSON.stringify(currentBatch)]).size;
+        if (currentSize > 2 * 1024 * 1024) {
+          currentBatch.pop(); // remove last invoice (too big)
+          saveBatch();        // save current batch
+          currentBatch.push(invoice); // start next batch with this invoice
         }
-
-        currentChunk.push(inv);
-        currentSize += invSize;
       });
 
-      // Save last chunk
-      if (currentChunk.length > 0) {
-        const jsonStr = JSON.stringify(currentChunk, null, 2);
-        const sizeKB = (new Blob([jsonStr]).size / 1024).toFixed(2);
-        console.log(`📦 bulk_invoices_${fileIndex}.json → ${sizeKB} KB`);
-        zip.file(`bulk_invoices_${fileIndex}.json`, jsonStr);
-      }
+      // Save leftover invoices
+      saveBatch();
 
-      console.log("🚀 All files added to ZIP. Ready for download.");
-
-      // Export zip
       zip.generateAsync({ type: "blob" }).then(content => {
         saveAs(content, "bulk_invoices.zip");
       });
