@@ -858,6 +858,8 @@ function generateBulkInvoices() {
         allInvoices.push(invoice);
       });
 
+      console.log(`✅ Parsed invoices: ${allInvoices.length}`);
+
       // ✅ Split into multiple JSON files under 2MB
       let currentChunk = [];
       let currentSize = 0;
@@ -868,7 +870,10 @@ function generateBulkInvoices() {
         const invSize = new Blob([invStr]).size;
 
         if (currentSize + invSize > 1800000 && currentChunk.length > 0) {
-          zip.file(`bulk_invoices_${fileIndex}.json`, JSON.stringify(currentChunk, null, 2));
+          const jsonStr = JSON.stringify(currentChunk, null, 2);
+          const sizeKB = (new Blob([jsonStr]).size / 1024).toFixed(2);
+          console.log(`📦 bulk_invoices_${fileIndex}.json → ${sizeKB} KB`);
+          zip.file(`bulk_invoices_${fileIndex}.json`, jsonStr);
           fileIndex++;
           currentChunk = [];
           currentSize = 0;
@@ -880,8 +885,13 @@ function generateBulkInvoices() {
 
       // Save last chunk
       if (currentChunk.length > 0) {
-        zip.file(`bulk_invoices_${fileIndex}.json`, JSON.stringify(currentChunk, null, 2));
+        const jsonStr = JSON.stringify(currentChunk, null, 2);
+        const sizeKB = (new Blob([jsonStr]).size / 1024).toFixed(2);
+        console.log(`📦 bulk_invoices_${fileIndex}.json → ${sizeKB} KB`);
+        zip.file(`bulk_invoices_${fileIndex}.json`, jsonStr);
       }
+
+      console.log("🚀 All files added to ZIP. Ready for download.");
 
       // Export zip
       zip.generateAsync({ type: "blob" }).then(content => {
@@ -890,7 +900,6 @@ function generateBulkInvoices() {
     }
   });
 }
-
 const csvFileInput = document.getElementById("csvFile");
 const csvDrop = document.getElementById("csvDrop");
 const fileInfo = document.getElementById("fileInfo");
