@@ -894,6 +894,10 @@ function generateBulkInvoices() {
     
     if (currentBatch.length > 0) {
       downloadFile(currentBatch, fileIndex);
+    }else{
+      console.log("no files to download")
+      alert("no files to download")
+      return;
     }
     
     function downloadFile(batch, index) {
