@@ -773,133 +773,102 @@ async function generateBulkInvoices() {
     alert("Please upload a CSV file first!");
     return;
   }
-
+  
   const buyerId = document.getElementById("bulkBuyerSelect").value;
   const buyerDetails = buyerMap[buyerId];
   if (!buyerDetails) {
     alert("Please select a buyer from Bulk Buyer dropdown!");
     return;
   }
-
-  const sellerStcd = document.getElementById("sellerStcd").value.trim();
-  const sellerGstin = document.getElementById("sellerGstin").value.trim();
-
-  // Parse CSV with PapaParse
+  
+  const sellerStcd = document.getElementById("sellerStcd").value;
+  const sellerGstin = document.getElementById("sellerGstin").value;
+  
   Papa.parse(fileInput, {
     header: true,
     skipEmptyLines: true,
     complete: async function(results) {
-      console.log("✅ Parsed CSV:", results);
-
-      const rows = results.data;
-      if (!rows.length) {
-        alert("CSV file is empty or invalid.");
+      console.log("📂 Parsed CSV:", results);
+      
+      if (!results.data || results.data.length === 0) {
+        alert("CSV file is empty!");
         return;
       }
-
-      const invoicesMap = {};
-
-      // Build invoice structure from CSV rows
+      
+      // Normalize headers (lowercase + trim)
+      const rows = results.data.map(row => {
+        const normalized = {};
+        for (let key in row) {
+          if (row.hasOwnProperty(key)) {
+            normalized[key.trim().toLowerCase()] = row[key];
+          }
+        }
+        return normalized;
+      });
+      
+      console.log("✅ Normalized Rows:", rows);
+      
+      // Group by invoice number
+      const invoiceGroups = {};
       rows.forEach(row => {
-        const invNo = row.InvoiceNo?.trim();
-        if (!invNo) return; // skip rows without invoice no
-
-        if (!invoicesMap[invNo]) {
-          invoicesMap[invNo] = {
+        const invNo = row["invno"]; // lowercase key
+        if (!invNo) return;
+        
+        if (!invoiceGroups[invNo]) {
+          invoiceGroups[invNo] = {
             Version: "1.1",
-            TranDtls: {
-              TaxSch: "GST",
-              SupTyp: row.SupTyp || "B2B"
-            },
-            DocDtls: {
-              Typ: row.InvType || "INV",
-              No: invNo,
-              Dt: row.InvDate || new Date().toISOString().split("T")[0]
-            },
-            SellerDtls: {
-              Gstin: sellerGstin,
-              StateCode: sellerStcd
-            },
+            TranDtls: { TaxSch: "GST", SupTyp: "B2B" },
+            SellerDtls: { Gstin: sellerGstin, Stcd: sellerStcd },
             BuyerDtls: buyerDetails,
-            ItemList: [],
-            ValDtls: {
-              AssVal: 0,
-              IgstVal: 0,
-              CgstVal: 0,
-              SgstVal: 0,
-              TotInvVal: 0
-            }
+            DocDtls: { No: invNo, Dt: row["invdate"] },
+            ItemList: []
           };
         }
-
-        const invoice = invoicesMap[invNo];
-        const taxable = parseFloat(row.Taxable || 0);
-        const rate = parseFloat(row.Percentage || 0);
-
-        const igst = (taxable * rate) / 100;
-
-        invoice.ItemList.push({
-          SlNo: invoice.ItemList.length + 1,
-          PrdDesc: row.PrdDesc || row.Description || "Item",
-          Qty: parseFloat(row.Qty || 1),
-          Unit: row.Unit || "NOS",
-          UnitPrice: parseFloat(row.UnitPrice || taxable),
-          TotAmt: taxable,
-          GstRt: rate,
-          IgstAmt: igst
+        
+        // Push item
+        invoiceGroups[invNo].ItemList.push({
+          SlNo: (invoiceGroups[invNo].ItemList.length + 1).toString(),
+          PrdDesc: row["description"],
+          IsServc: row["isservice"] === "Y" ? "Y" : "N",
+          Qty: 1,
+          Unit: "NOS",
+          UnitPrice: parseFloat(row["taxable"]) || 0,
+          TotAmt: parseFloat(row["taxable"]) || 0,
+          GstRt: parseFloat(row["percentage"]) || 0
         });
-
-        // Update totals
-        invoice.ValDtls.AssVal += taxable;
-        invoice.ValDtls.IgstVal += igst;
-        invoice.ValDtls.TotInvVal = 
-          invoice.ValDtls.AssVal + invoice.ValDtls.IgstVal;
       });
-
-      const allInvoices = Object.values(invoicesMap);
-      console.log("📦 Built Invoices:", allInvoices);
-
+      
+      const allInvoices = Object.values(invoiceGroups);
+      console.log("🧾 Final Invoices:", allInvoices);
+      
       if (allInvoices.length === 0) {
-        alert("No invoices generated. Check CSV headers.");
+        alert("No invoices generated. Check CSV headers!");
         return;
       }
-
-      // ---- Split into batches (2MB max each) ----
+      
+      // Create zip
       const zip = new JSZip();
-      let batch = [];
-      let batchSize = 0;
-      let part = 1;
-
-      allInvoices.forEach(inv => {
-        const str = JSON.stringify(inv);
-        const size = new Blob([str]).size;
-
-        if (batchSize + size > 2 * 1024 * 1024) {
-          // Save current batch
-          const filename = `Invoices_Part${part}.json`;
-          zip.file(filename, JSON.stringify(batch, null, 2));
-          console.log(`💾 Added ${filename} (${batch.length} invoices)`);
-
-          batch = [];
-          batchSize = 0;
-          part++;
+      let fileCount = 1;
+      let currentSize = 0;
+      let folder = zip.folder("batch_" + fileCount);
+      
+      for (let i = 0; i < allInvoices.length; i++) {
+        const jsonStr = JSON.stringify(allInvoices[i], null, 2);
+        const blobSize = new Blob([jsonStr]).size;
+        
+        if ((currentSize + blobSize) > 2 * 1024 * 1024) {
+          fileCount++;
+          folder = zip.folder("batch_" + fileCount);
+          currentSize = 0;
         }
-
-        batch.push(inv);
-        batchSize += size;
-      });
-
-      // Save leftover batch
-      if (batch.length > 0) {
-        const filename = `Invoices_Part${part}.json`;
-        zip.file(filename, JSON.stringify(batch, null, 2));
-        console.log(`💾 Added ${filename} (${batch.length} invoices)`);
+        
+        folder.file(`Invoice_${i + 1}.json`, jsonStr);
+        currentSize += blobSize;
       }
-
-      // ---- Generate ZIP ----
+      
       const content = await zip.generateAsync({ type: "blob" });
-      saveAs(content, "Invoices.zip");
-      alert("✅ Invoices ZIP generated successfully!");
+      saveAs(content, "Invoices_Zip.zip");
+      alert(`✅ ${allInvoices.length} invoices generated successfully!`);
     }
   });
 }
