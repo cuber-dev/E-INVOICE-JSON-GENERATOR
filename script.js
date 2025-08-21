@@ -756,150 +756,158 @@ function generateBulkInvoices() {
     alert("Please upload a CSV file first!");
     return;
   }
-
+  
   const buyerId = document.getElementById("bulkBuyerSelect").value;
   const buyerDetails = buyerMap[buyerId];
   if (!buyerDetails) {
     alert("Please select a buyer from Bulk Buyer dropdown!");
     return;
   }
-
+  
   const sellerStcd = document.getElementById("sellerStcd").value;
   const sellerGstin = document.getElementById("sellerGstin").value;
-
-  Papa.parse(fileInput, {
-    header: true,
-    skipEmptyLines: true,
-    complete: function (results) {
-      const data = results.data;
-      const zip = new JSZip();
-
-      // Group rows by invNo
-      const invoiceGroups = {};
-      data.forEach(row => {
-        const invNo = row["invNo"];
-        if (!invoiceGroups[invNo]) invoiceGroups[invNo] = [];
-        invoiceGroups[invNo].push(row);
+  const sellerName = document.getElementById("sellerName").value;
+  const sellerAddr = document.getElementById("sellerAddr").value;
+  const sellerLoc = document.getElementById("sellerLoc").value;
+  const sellerPin = document.getElementById("sellerPin").value;
+  const sellerPh = document.getElementById("sellerPh").value;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const csvText = e.target.result;
+    const rows = csvText.trim().split("\n").map(r => r.split(","));
+    const header = rows[0].map(h => h.trim());
+    const data = rows.slice(1);
+    
+    const invoicesMap = {};
+    
+    data.forEach(row => {
+      let obj = {};
+      header.forEach((h, i) => {
+        obj[h] = row[i] ? row[i].trim() : "";
       });
-
-      let currentBatch = [];
-      let fileIndex = 1;
-
-      function saveBatch() {
-        if (currentBatch.length > 0) {
-          zip.file(`bulk_invoices_${fileIndex}.json`, JSON.stringify(currentBatch, null, 2));
-          fileIndex++;
-          currentBatch = [];
-        }
-      }
-
-      // Process each invoice
-      Object.keys(invoiceGroups).forEach(invNo => {
-        const rows = invoiceGroups[invNo];
-        let assVal = 0, cgst = 0, sgst = 0, igst = 0, total = 0;
-        const itemList = [];
-
-        rows.forEach((row, i) => {
-          const taxable = parseFloat(row["taxable"]) || 0;
-          const gstRate = parseFloat(row["percentage"]) || 0;
-
-          let itemCgst = 0, itemSgst = 0, itemIgst = 0;
-          let itemTotal = taxable;
-
-          if (sellerStcd === buyerDetails.Stcd) {
-            itemCgst = +(taxable * (gstRate / 200)).toFixed(2);
-            itemSgst = +(taxable * (gstRate / 200)).toFixed(2);
-            itemTotal += itemCgst + itemSgst;
-          } else {
-            itemIgst = +(taxable * (gstRate / 100)).toFixed(2);
-            itemTotal += itemIgst;
-          }
-
-          itemList.push({
-            SlNo: (i + 1).toString(),
-            PrdDesc: row["description"],
-            HsnCd: row["hsn"] || "0000",
-            Qty: row["qty"] || 1,
-            FreeQty: 0,
-            Unit: row["unit"] || "NOS",
-            UnitPrice: taxable,
-            TotAmt: taxable,
-            Discount: 0,
-            PreTaxVal: 0,
-            AssAmt: taxable,
-            GstRt: gstRate,
-            IgstAmt: itemIgst,
-            CgstAmt: itemCgst,
-            SgstAmt: itemSgst,
-            CesRt: 0,
-            CesAmt: 0,
-            CesNonAdvlAmt: 0,
-            StateCesRt: 0,
-            StateCesAmt: 0,
-            StateCesNonAdvlAmt: 0,
-            OthChrg: 0,
-            TotItemVal: itemTotal,
-            IsServc: row["isService"] || "N"
-          });
-
-          assVal += taxable;
-          cgst += itemCgst;
-          sgst += itemSgst;
-          igst += itemIgst;
-          total += itemTotal;
-        });
-
-        const invoice = {
+      
+      const invoiceNo = obj.InvoiceNo;
+      if (!invoiceNo) return;
+      
+      if (!invoicesMap[invoiceNo]) {
+        invoicesMap[invoiceNo] = {
           Version: "1.1",
-          TranDtls: { TaxSch: "GST", SupTyp: "B2B", IgstOnIntra: "N", RegRev: "N", EcmGstin: null },
-          DocDtls: { Typ: "INV", No: invNo, Dt: rows[0]["invDate"] },
+          TranDtls: {
+            TaxSch: "GST",
+            SupTyp: obj.SupTyp || "B2B",
+            RegRev: obj.RegRev || "N",
+            EcmGstin: obj.EcmGstin || null,
+            IgstOnIntra: obj.IgstOnIntra || "N"
+          },
+          DocDtls: {
+            Typ: obj.DocTyp || "INV",
+            No: obj.InvoiceNo,
+            Dt: obj.InvDate
+          },
           SellerDtls: {
             Gstin: sellerGstin,
-            LglNm: document.getElementById("sellerName").value,
-            Addr1: document.getElementById("sellerAddr1").value,
-            Addr2: null,
-            Loc: document.getElementById("sellerLoc").value,
-            Pin: parseInt(document.getElementById("sellerPin").value),
+            LglNm: sellerName,
+            Addr1: sellerAddr,
+            Loc: sellerLoc,
+            Pin: sellerPin,
             Stcd: sellerStcd,
-            Ph: document.getElementById("sellerPh").value,
-            Em: null
+            Ph: sellerPh
           },
-          BuyerDtls: buyerDetails,
+          BuyerDtls: {
+            Gstin: buyerDetails.gstin,
+            LglNm: buyerDetails.name,
+            Addr1: buyerDetails.addr,
+            Loc: buyerDetails.loc,
+            Pin: buyerDetails.pin,
+            Stcd: buyerDetails.stcd,
+            Ph: buyerDetails.ph
+          },
+          ItemList: [],
           ValDtls: {
-            AssVal: assVal,
-            IgstVal: igst,
-            CgstVal: cgst,
-            SgstVal: sgst,
+            AssVal: 0,
+            CgstVal: 0,
+            SgstVal: 0,
+            IgstVal: 0,
             CesVal: 0,
-            StCesVal: 0,
-            Discount: 0,
             OthChrg: 0,
             RndOffAmt: 0,
-            TotInvVal: total
-          },
-          RefDtls: { InvRm: "NICGEPP2.0" },
-          ItemList: itemList
+            TotInvVal: 0
+          }
         };
-
-        currentBatch.push(invoice);
-
-        // Check size → flush if > 2MB
-        const currentSize = new Blob([JSON.stringify(currentBatch)]).size;
-        if (currentSize > 2 * 1024 * 1024) {
-          currentBatch.pop(); // remove last invoice (too big)
-          saveBatch();        // save current batch
-          currentBatch.push(invoice); // start next batch with this invoice
-        }
-      });
-
-      // Save leftover invoices
-      saveBatch();
-
-      zip.generateAsync({ type: "blob" }).then(content => {
-        saveAs(content, "bulk_invoices.zip");
-      });
+      }
+      
+      // Add line item
+      if (obj.PrdDesc && obj.Taxable) {
+        const item = {
+          SlNo: invoicesMap[invoiceNo].ItemList.length + 1,
+          PrdDesc: obj.PrdDesc,
+          HsnCd: obj.HsnCd,
+          Qty: Number(obj.Qty || 0),
+          Unit: obj.Unit || "NOS",
+          UnitPrice: Number(obj.UnitPrice || 0),
+          TotAmt: Number(obj.Qty || 0) * Number(obj.UnitPrice || 0),
+          Discount: Number(obj.Discount || 0),
+          AssAmt: Number(obj.Taxable || 0),
+          GstRt: Number(obj.GstRt || 0),
+          IgstAmt: Number(obj.IgstAmt || 0),
+          CgstAmt: Number(obj.CgstAmt || 0),
+          SgstAmt: Number(obj.SgstAmt || 0),
+          CesAmt: Number(obj.CesAmt || 0)
+        };
+        
+        invoicesMap[invoiceNo].ItemList.push(item);
+        
+        // Update totals
+        let v = invoicesMap[invoiceNo].ValDtls;
+        v.AssVal += item.AssAmt;
+        v.IgstVal += item.IgstAmt;
+        v.CgstVal += item.CgstAmt;
+        v.SgstVal += item.SgstAmt;
+        v.CesVal += item.CesAmt;
+        v.TotInvVal += item.AssAmt + item.IgstAmt + item.CgstAmt + item.SgstAmt + item.CesAmt;
+      }
+    });
+    
+    // Convert invoicesMap to array
+    const allInvoices = Object.values(invoicesMap);
+    
+    // Split into multiple JSON files (each < 2MB)
+    let currentBatch = [];
+    let currentSize = 0;
+    let fileIndex = 1;
+    
+    allInvoices.forEach(inv => {
+      const invStr = JSON.stringify(inv);
+      const invSize = new Blob([invStr]).size;
+      
+      if (currentSize + invSize > 2 * 1024 * 1024) { // 2MB
+        downloadFile(currentBatch, fileIndex);
+        fileIndex++;
+        currentBatch = [];
+        currentSize = 0;
+      }
+      
+      currentBatch.push(inv);
+      currentSize += invSize;
+    });
+    
+    if (currentBatch.length > 0) {
+      downloadFile(currentBatch, fileIndex);
     }
-  });
+    
+    function downloadFile(batch, index) {
+      const blob = new Blob([JSON.stringify(batch, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Invoices_Part${index}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+  
+  reader.readAsText(fileInput);
 }
 const csvFileInput = document.getElementById("csvFile");
 const csvDrop = document.getElementById("csvDrop");
