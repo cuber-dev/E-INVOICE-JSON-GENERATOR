@@ -872,17 +872,19 @@ function generateBulkInvoices() {
     // Convert invoicesMap to array
     const allInvoices = Object.values(invoicesMap);
     
-    // Split into multiple JSON files (each < 2MB)
+    // Split into multiple JSON files (<2MB each)
     let currentBatch = [];
     let currentSize = 0;
     let fileIndex = 1;
+    const zip = new JSZip();
     
     allInvoices.forEach(inv => {
       const invStr = JSON.stringify(inv);
       const invSize = new Blob([invStr]).size;
       
-      if (currentSize + invSize > 2 * 1024 * 1024) { // 2MB
-        downloadFile(currentBatch, fileIndex);
+      if (currentSize + invSize > 2 * 1024 * 1024) {
+        // Save current batch to zip
+        zip.file(`Invoices_Part${fileIndex}.json`, JSON.stringify(currentBatch, null, 2));
         fileIndex++;
         currentBatch = [];
         currentSize = 0;
@@ -893,22 +895,18 @@ function generateBulkInvoices() {
     });
     
     if (currentBatch.length > 0) {
-      downloadFile(currentBatch, fileIndex);
-    }else{
-      console.log("no files to download")
-      alert("no files to download")
-      return;
+      zip.file(`Invoices_Part${fileIndex}.json`, JSON.stringify(currentBatch, null, 2));
     }
     
-    function downloadFile(batch, index) {
-      const blob = new Blob([JSON.stringify(batch, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
+    // Generate and download ZIP
+    zip.generateAsync({ type: "blob" }).then(content => {
+      const url = URL.createObjectURL(content);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Invoices_Part${index}.json`;
+      a.download = "Invoices.zip";
       a.click();
       URL.revokeObjectURL(url);
-    }
+    });
   };
   
   reader.readAsText(fileInput);
