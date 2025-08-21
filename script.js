@@ -767,7 +767,7 @@ function generateBulkInvoices() {
   const sellerStcd = document.getElementById("sellerStcd").value;
   const sellerGstin = document.getElementById("sellerGstin").value;
   const sellerName = document.getElementById("sellerName").value;
-  const sellerAddr = document.getElementById("sellerAddr").value;
+  const sellerAddr = document.getElementById("sellerAddr1").value;
   const sellerLoc = document.getElementById("sellerLoc").value;
   const sellerPin = document.getElementById("sellerPin").value;
   const sellerPh = document.getElementById("sellerPh").value;
