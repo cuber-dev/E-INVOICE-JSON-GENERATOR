@@ -792,8 +792,9 @@ function generateBulkInvoices() {
         const itemList = [];
 
         rows.forEach((row, i) => {
-          const taxable = parseFloat(row["taxable"]) || 0;
-          const gstRate = parseFloat(row["percentage"]) || 0;
+          // ✅ Clean numbers (remove commas, trim spaces)
+          const taxable = parseFloat((row["taxable"] || "0").toString().replace(/,/g, "").trim()) || 0;
+          const gstRate = parseFloat((row["percentage"] || "0").toString().replace(/,/g, "").trim()) || 0;
 
           let itemCgst = 0, itemSgst = 0, itemIgst = 0;
           let itemTotal = taxable;
@@ -857,7 +858,7 @@ function generateBulkInvoices() {
         allInvoices.push(invoice);
       });
 
-      // Now split into chunks under 2MB
+      // ✅ Split into multiple JSON files under 2MB
       let currentChunk = [];
       let currentSize = 0;
       let fileIndex = 1;
@@ -867,7 +868,6 @@ function generateBulkInvoices() {
         const invSize = new Blob([invStr]).size;
 
         if (currentSize + invSize > 1800000 && currentChunk.length > 0) {
-          // Save current chunk
           zip.file(`bulk_invoices_${fileIndex}.json`, JSON.stringify(currentChunk, null, 2));
           fileIndex++;
           currentChunk = [];
@@ -890,6 +890,7 @@ function generateBulkInvoices() {
     }
   });
 }
+
 const csvFileInput = document.getElementById("csvFile");
 const csvDrop = document.getElementById("csvDrop");
 const fileInfo = document.getElementById("fileInfo");
