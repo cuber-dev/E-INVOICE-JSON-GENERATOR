@@ -332,7 +332,14 @@ const predefinedItems = {
     IsServc: "Y"
   }
 };
-
+const isServer = {
+  tillDate: "2025-08-24",
+  get down() {
+    const currentDate = new Date();
+    const till = new Date(this.tillDate);
+    return currentDate < till;
+  }
+};
 function addItem() {
   itemCount++;
   const container = document.getElementById("itemsContainer");
@@ -494,6 +501,7 @@ function buildBuyerDropdown() {
 }
 
 function generateJSON() {
+  if(isServer.down) return alert("E-invoice Json server is down, please try again later!");
   if(document.getElementById("buyerGstin").value === "Select") {
     alert("please select the buyer")
     return;
