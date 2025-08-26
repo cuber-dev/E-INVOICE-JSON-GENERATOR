@@ -169,6 +169,143 @@
   <footer class="card-footer">
     <button type="button" class="btn" onclick="generateBulkInvoices()">Generate ZIP</button>
   </footer>
+  <!-- =========================
+ JSON Invoice Merger Component
+========================= -->
+<div class="json-merger-container">
+  <h3>Merge Invoice JSON Files</h3>
+
+  <!-- Drag & Drop Area -->
+  <div id="dropZone" class="drop-zone">
+    Drag & Drop JSON files here or click to select
+    <input type="file" id="fileInput" accept=".json" multiple hidden>
+  </div>
+
+  <button id="mergeBtn" class="merge-btn" disabled>Merge & Download</button>
+</div>
+
+<!-- JSZip Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script>
+  const dropZone = document.getElementById("dropZone");
+  const fileInput = document.getElementById("fileInput");
+  const mergeBtn = document.getElementById("mergeBtn");
+  let selectedFiles = [];
+
+  // Drag & drop handlers
+  dropZone.addEventListener("click", () => fileInput.click());
+
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+  });
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("drag-over");
+  });
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+    handleFiles(e.dataTransfer.files);
+  });
+
+  fileInput.addEventListener("change", (e) => {
+    handleFiles(e.target.files);
+  });
+
+  function handleFiles(files) {
+    selectedFiles = [...selectedFiles, ...files];
+    if (selectedFiles.length > 0) {
+      mergeBtn.disabled = false;
+      dropZone.textContent = `${selectedFiles.length} file(s) selected`;
+    }
+  }
+
+  // Merge + Download
+  mergeBtn.addEventListener("click", async () => {
+    let mergedInvoices = [];
+
+    // Read & parse files
+    for (let file of selectedFiles) {
+      const text = await file.text();
+      try {
+        const data = JSON.parse(text);
+        if (Array.isArray(data)) {
+          mergedInvoices.push(...data);
+        } else {
+          console.warn(`${file.name} is not an array`);
+        }
+      } catch (err) {
+        console.error("Invalid JSON in", file.name, err);
+      }
+    }
+
+    if (mergedInvoices.length === 0) {
+      alert("No valid invoices found!");
+      return;
+    }
+
+    // Sort invoices (by invoice number or date if present)
+    mergedInvoices.sort((a, b) => {
+      if (a.invoiceNumber && b.invoiceNumber) {
+        return a.invoiceNumber - b.invoiceNumber;
+      }
+      return 0; // fallback
+    });
+
+    // Split into chunks of 15
+    const zip = new JSZip();
+    let fileCount = 1;
+    for (let i = 0; i < mergedInvoices.length; i += 15) {
+      const chunk = mergedInvoices.slice(i, i + 15);
+      const blobContent = JSON.stringify(chunk, null, 2);
+      zip.file(`merged_invoices_part${fileCount}.json`, blobContent);
+      fileCount++;
+    }
+
+    // Create ZIP
+    const content = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(content);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "merged_invoices.zip";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+</script>
+
+<style>
+  .json-merger-container {
+    margin: 1rem 0;
+    padding: 1rem;
+    border: 2px solid var(--border-color, #ccc);
+    border-radius: 10px;
+    background: var(--bg-color, #f9f9f9);
+  }
+  .drop-zone {
+    padding: 5rem 2rem;
+    text-align: center;
+    border: 2px dashed var(--primary-color, #6a0dad);
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  .drop-zone.drag-over {
+    background: var(--secondary-color, #f0e6f9);
+  }
+  .merge-btn {
+    padding: 0.6rem 1.2rem;
+    background: var(--primary-color, #6a0dad);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .merge-btn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+  }
+</style>
 </section>
 <h3>Output JSON:</h3>
   <pre id="output">NO DATA TO DISPLAY!</pre>
