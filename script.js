@@ -499,9 +499,25 @@ function buildBuyerDropdown() {
   bulkBuyer.appendChild(option2);
 }
 }
-
+function checkInvDateRange(dateStr) {
+  // Expecting dateStr in dd/mm/yyyy format
+  const [day, month, year] = dateStr.split("/").map(Number);
+  const inputDate = new Date(year, month - 1, day);
+  
+  // Today's date (set time to midnight for clean comparison)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  // Date 30 days ago
+  const past30 = new Date(today);
+  past30.setDate(today.getDate() - 30);
+  
+  // Check if inputDate is between past30 and today
+  return inputDate >= past30 && inputDate <= today;
+}
 function generateJSON() {
   if(isServer.down) return alert("E-invoice Json server is down, please try again later!");
+  if(!checkInvDateRange(document.getElementById("docDate").value)) return alert('Invoice date must be within the last 30days including today!')
   if(document.getElementById("buyerGstin").value === "Select") {
     alert("please select the buyer")
     return;
