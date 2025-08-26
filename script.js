@@ -310,19 +310,6 @@ const predefinedItems = {
     isIGST: true,
     IsServc: "Y"
   },
-  'LABOUR-local': {
-    desc: "LABOUR",
-    hsn: "9954",
-    gst: 18,
-    isIGST: false,
-    IsServc: "Y"
-  },'LABOUR-OUTSTATE': {
-  desc: "LABOUR CHARGES FOR WARRANTY",
-  hsn: "9987",
-  gst: 18,
-  isIGST: true,
-  IsServc: "Y"
-},
   "INCENTIVE FROM TVSM COMPANY (local)":{
     desc: "INCENTIVE FROM TVSM COMPANY",
     hsn: "9983",
@@ -333,6 +320,18 @@ const predefinedItems = {
     "INCENTIVE FROM TVSM COMPANY (outstate)": {
     desc: "INCENTIVE FROM TVSM COMPANY",
     hsn: "9983",
+    gst: 18,
+    isIGST: true,
+    IsServc: "Y"
+  },  'LABOUR-local': {
+    desc: "LABOUR",
+    hsn: "9954",
+    gst: 18,
+    isIGST: false,
+    IsServc: "Y"
+  }, 'LABOUR-OUTSTATE': {
+    desc: "Labour Charges for Waranty",
+    hsn: "9987",
     gst: 18,
     isIGST: true,
     IsServc: "Y"
