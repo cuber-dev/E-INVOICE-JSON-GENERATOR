@@ -515,6 +515,20 @@ function checkInvDateRange(dateStr) {
   // Check if inputDate is between past30 and today
   return inputDate >= past30 && inputDate <= today;
 }
+function formatDate(input) {
+  // Split by "-" (day-month-year)
+  const parts = input.split("-");
+  if (parts.length !== 3) return input; // fallback if invalid
+  
+  let [day, month, year] = parts;
+  
+  // Ensure month has 2 digits
+  month = month.padStart(2, "0");
+  
+  // Return in desired format
+  return `${day}/${month}/${year}`;
+}
+
 function generateJSON() {
   if(isServer.down) return alert("E-invoice Json server is down, please try again later!");
   if(!checkInvDateRange(document.getElementById("docDate").value)) return alert('Invoice date must be within the last 30days including today!')
@@ -762,7 +776,7 @@ function generateBulkInvoices() {
         const invoice = {
           Version: "1.1",
           TranDtls: { TaxSch: "GST", SupTyp: "B2B", IgstOnIntra: "N", RegRev: "N", EcmGstin: null },
-          DocDtls: { Typ: "INV", No: invNo, Dt: rows[0]["invDate"] },
+          DocDtls: { Typ: "INV", No: invNo, Dt: formatDate(rows[0]["invDate"]) },
           SellerDtls: {
             Gstin: sellerGstin,
             LglNm: document.getElementById("sellerName").value,
