@@ -310,13 +310,19 @@ const predefinedItems = {
     isIGST: true,
     IsServc: "Y"
   },
-  LABOUR: {
+  'LABOUR-local': {
     desc: "LABOUR",
     hsn: "9954",
     gst: 18,
     isIGST: false,
     IsServc: "Y"
-  },
+  },'LABOUR-OUTSTATE': {
+  desc: "LABOUR CHARGES FOR WARRANTY",
+  hsn: "9987",
+  gst: 18,
+  isIGST: true,
+  IsServc: "Y"
+},
   "INCENTIVE FROM TVSM COMPANY (local)":{
     desc: "INCENTIVE FROM TVSM COMPANY",
     hsn: "9983",
