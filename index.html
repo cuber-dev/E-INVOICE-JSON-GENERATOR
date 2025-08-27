@@ -80,8 +80,8 @@
       Document Category: <input type="text" disabled value="B2B">
       Reverse Charge: <input type="text" disabled value="NO">
       Document Type: <input type="text" disabled value="Tax Invoice">
-      Document No: <input type="text" id="docNo" value="enter_inv_number">
-      Document Date: <input type="text" id="docDate" value="">
+      Document No: <input type="text" required id="docNo" value="" placeholder="enter_inv_number">
+      Document Date: <input type="text" required id="docDate" value="">
     </fieldset>
 
     <fieldset class="seller-details" disabled>
@@ -98,7 +98,7 @@
     <fieldset>
       <legend>Buyer Details</legend>
       <label for="buyerSelector">Choose Buyer:</label>
-      <select id="buyerSelector" onchange="populateBuyerDetails()">
+      <select required id="buyerSelector" onchange="populateBuyerDetails()">
         <!-- Options will be added dynamically -->
       </select>
 
@@ -127,7 +127,7 @@
         </div>
         <button type="button" class="form-button" onclick="addItem()">Add Item +</button>
         <br>
-        <button type="button" class="form-button" onclick="generateJSON()">Generate JSON </button>
+        <button type="submit" class="form-button" onclick="">Generate JSON </button>
       </div>
     </fieldset>
   </form>

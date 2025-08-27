@@ -345,6 +345,7 @@ const isServer = {
     return currentDate < till;
   }
 };
+let createdInvoices = [];
 function addItem() {
   itemCount++;
   const container = document.getElementById("itemsContainer");
@@ -547,10 +548,16 @@ function generateJSON() {
   let igstVal = 0;
   let totInvVal = 0;
   let docNumber = document
-    .getElementById("docNo")
-    .value.replace(/\s+/g, "")
-    .trim();
-  const invoice = {
+  .getElementById("docNo")
+  .value.replace(/\s+/g, "")
+  .trim();
+
+if (createdInvoices.includes(docNumber)) {
+  return alert("Cannot create E-Invoice for same invoice Number: " + docNumber);
+}
+
+createdInvoices.push(docNumber);  
+const invoice = {
     Version: "1.1",
     TranDtls: {
       TaxSch: "GST",
@@ -1123,3 +1130,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const saved = localStorage.getItem("appTheme") || "light";
   setTheme(saved);
 });
+
+document.querySelector('#invoiceForm').addEventListener('submit',(e) => {
+  e.preventDefault();
+  generateJSON();
+})
