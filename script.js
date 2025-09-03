@@ -338,7 +338,7 @@ const predefinedItems = {
   }
 };
 const isServer = {
-  tillDate: "2025-08-24",
+  tillDate: "2025-09-03",
   get down() {
     const currentDate = new Date();
     const till = new Date(this.tillDate);
