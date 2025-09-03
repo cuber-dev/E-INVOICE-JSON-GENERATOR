@@ -345,6 +345,7 @@ const isServer = {
     return currentDate < till;
   }
 };
+console.log(tillDate)
 let createdInvoices = [];
 function addItem() {
   itemCount++;
