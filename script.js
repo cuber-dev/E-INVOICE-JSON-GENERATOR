@@ -338,14 +338,14 @@ const predefinedItems = {
   }
 };
 const isServer = {
-  tillDate: "2025-09-03",
+  tillDate: "2025-09-04",
   get down() {
     const currentDate = new Date();
     const till = new Date(this.tillDate);
     return currentDate < till;
   }
 };
-console.log(tillDate)
+console.log("error")
 let createdInvoices = [];
 function addItem() {
   itemCount++;
