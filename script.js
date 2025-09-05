@@ -889,7 +889,56 @@ const themes = {
     "--bg-color": "#ffffff",
     "--danger-color": "#dc2626"
   },
-  
+  ocean: {
+  "--primary-color": "#1e3a8a",
+  "--secondary-color": "#e0f7fa",
+  "--accent-color": "#00bcd4",
+  "--hover-color": "#0288d1",
+  "--border-color": "#4dd0e1",
+  "--text-color": "#0d3b66",
+  "--bg-color": "#f0fdfa",
+  "--danger-color": "#d32f2f"
+},
+lava: {
+  "--primary-color": "#ff5722",
+  "--secondary-color": "#fff3e0",
+  "--accent-color": "#ff9800",
+  "--hover-color": "#e65100",
+  "--border-color": "#ffcc80",
+  "--text-color": "#3e2723",
+  "--bg-color": "#fff8f1",
+  "--danger-color": "#b71c1c"
+},
+galaxy: {
+  "--primary-color": "#4c1d95",
+  "--secondary-color": "#0f172a",
+  "--accent-color": "#6366f1",
+  "--hover-color": "#9333ea",
+  "--border-color": "#7dd3fc",
+  "--text-color": "#e0f2fe",
+  "--bg-color": "#1e1b4b",
+  "--danger-color": "#f43f5e"
+},
+autumn: {
+  "--primary-color": "#92400e",
+  "--secondary-color": "#fff7ed",
+  "--accent-color": "#d97706",
+  "--hover-color": "#b45309",
+  "--border-color": "#fcd34d",
+  "--text-color": "#451a03",
+  "--bg-color": "#fef3c7",
+  "--danger-color": "#991b1b"
+},
+rainbow: {
+  "--primary-color": "#e11d48", // red
+  "--secondary-color": "#fef3c7", // yellow
+  "--accent-color": "#22c55e", // green
+  "--hover-color": "#3b82f6", // blue
+  "--border-color": "#a78bfa", // violet
+  "--text-color": "#111827",
+  "--bg-color": "#ffffff",
+  "--danger-color": "#dc2626"
+},
   // 5. Sunset
   sunset: {
     "--primary-color": "#b91c1c",
