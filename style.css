@@ -64,6 +64,9 @@
   cursor: pointer;
   font-weight: bold;
 }
+#login-status{
+  color: var(--danger-color);
+}
 .logout-btn:hover {
   background: #b02a37;
 }

@@ -54,7 +54,6 @@ function setSellerDetails(details) {
 
 // Save login with expiry (2 hrs)
 function saveLogin(userKey) {
-  alert("Login successful")
   const expiryTime = Date.now() + 12 * 60 * 60 * 1000; // 12 hrs
   localStorage.setItem(
     "loginSession",
@@ -94,7 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
-    
+    const status = document.getElementById("login-status");
+
     // Check each user
     for (const key in users) {
       const u = users[key];
@@ -105,8 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
     }
-    
-    alert("Invalid username or password!");
+    status.innerHTML = "Invalid username or password!";
   });
 });
 
