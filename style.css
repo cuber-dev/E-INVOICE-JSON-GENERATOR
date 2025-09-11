@@ -56,7 +56,7 @@
 }
 .logout-btn {
   margin-bottom: 2rem;
-  background: #dc3545; /* red */
+  background: var(--danger-color); /* red */
   color: #fff;
   border: none;
   padding: 0.6rem 1rem;
