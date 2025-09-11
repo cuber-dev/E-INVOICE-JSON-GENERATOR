@@ -543,6 +543,11 @@ function generateJSON() {
     alert("please select the buyer")
     return;
   }
+  if(document.getElementById("sellerGstin").value === ""){
+    alert("please login first")
+    window.location.reload();
+    return;
+  }
   let assVal = 0;
   let cgstVal = 0;
   let sgstVal = 0;

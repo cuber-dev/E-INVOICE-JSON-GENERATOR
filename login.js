@@ -2,7 +2,7 @@
 const users = {
   savera: {
     username: "14929",
-    password: "savera_14929",
+    password: "payme",
     details: {
       Gstin: "36AFHFS4680J1ZH",
       LglNm: "SAVERA AUTOCRAFT LLP",
@@ -18,7 +18,7 @@ const users = {
   },
   laxmi: {
     username: "14517",
-    password: "laxmi_14517",
+    password: "Sep@2025#",
     details: {
       Gstin: "36AAFCL0077Q1Z1",
       LglNm: "LAXMI AUTO AGENCIES PRIVATE LIMITED",
@@ -43,12 +43,19 @@ function setSellerDetails(details) {
   document.getElementById("sellerPin").value = details.Pin || "";
   document.getElementById("sellerStcd").value = details.Stcd || "";
   document.getElementById("sellerPh").value = details.Ph || "";
+  
+  
+  // 🔹 Update header text
+  const headerEl = document.querySelector(".header");
+  if (headerEl) {
+    headerEl.textContent = `Logged in as ${details.LglNm} - ${details.Gstin}`;
+  }
 }
 
 // Save login with expiry (2 hrs)
 function saveLogin(userKey) {
   alert("Login successful")
-  const expiryTime = Date.now() + 2 * 60 * 60 * 1000; // 2 hrs
+  const expiryTime = Date.now() + 12 * 60 * 60 * 1000; // 12 hrs
   localStorage.setItem(
     "loginSession",
     JSON.stringify({ user: userKey, expiry: expiryTime })
@@ -101,4 +108,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     alert("Invalid username or password!");
   });
+});
+
+const logoutBtn = document.getElementById("logoutBtn");
+logoutBtn.addEventListener("click", () => {
+  if(!confirm("Are you sure want to log out?")) return;
+  localStorage.removeItem("loginSession");
+  location.reload(); // reload page
 });
