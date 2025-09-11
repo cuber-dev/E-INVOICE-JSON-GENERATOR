@@ -246,6 +246,10 @@ const buyerMap = {
   Em: null
 }
 };
+const allowed = [
+  "36AFHFS4680J1ZH",
+  "36AAFCL0077Q1Z1",
+]
 const predefinedItems = {
   WARRANTY: {
     desc: "WARRANTY",
@@ -537,13 +541,18 @@ function formatDate(input) {
 }
 
 function generateJSON() {
+  const session = localStorage.getItem("loginSession");
+  if (!session) return window.location.reload();
+  const isGstin = document.getElementById("sellerGstin").value;
+  if (!allowed.includes(isGstin)) return window.location.reload();
+  
   if(isServer.down) return alert("E-invoice Json server is down, please try again later!");
   if(!checkInvDateRange(document.getElementById("docDate").value)) return alert('Invoice date must be within the last 30days including today!')
   if(document.getElementById("buyerGstin").value === "Select") {
     alert("please select the buyer")
     return;
   }
-  if(document.getElementById("sellerGstin").value === ""){
+  if( isGstin === ""){
     alert("please login first")
     window.location.reload();
     return;
