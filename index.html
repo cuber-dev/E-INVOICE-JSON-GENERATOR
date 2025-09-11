@@ -41,6 +41,8 @@
   <!-- Styles & scripts -->
   <link rel="stylesheet" href="style.css" />
   <script defer src="script.js"></script>
+  <script defer src="login.js"></script>
+
 </head>
 
 <body>
@@ -78,6 +80,24 @@
   <button data-theme="autumn">🍂 Autumn</button>
   <button data-theme="rainbow">🌈 Rainbow</button>
 </div></div>
+  <!-- Login Form -->
+  <div class="login-container hidden">
+    <form class="login-form">
+      <h2 class="login-title">Login</h2>
+      
+      <div class="field">
+        <label for="username">Username / Email</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      
+      <button type="submit" class="btn">Login</button>
+    </form>
+  </div>
   <form id="invoiceForm">
     <fieldset>
       <legend>Document Details</legend>

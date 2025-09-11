@@ -1185,3 +1185,5 @@ document.querySelector('#invoiceForm').addEventListener('submit',(e) => {
   e.preventDefault();
   generateJSON();
 })
+
+
