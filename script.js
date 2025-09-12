@@ -717,8 +717,9 @@ window.onload = () => {
   document.addEventListener("keydown", function(e) {
     if (e.ctrlKey) {
       switch (e.key.toLowerCase()) {
-        case "n": // Ctrl + N
-          e.preventDefault(); // prevent default browser new window
+        case "e": // Ctrl + N
+          e.preventDefault();
+          alert(true)// prevent default browser new window
           addItem();
           break;
           
@@ -738,11 +739,9 @@ window.onload = () => {
   
   function logout() {
     const logoutBtn = document.getElementById("logoutBtn");
-    logoutBtn.addEventListener("click", () => {
-      if (!confirm("Are you sure want to log out?")) return;
-      localStorage.removeItem("loginSession");
-      location.reload(); // reload page
-    });
+    if (!confirm("Are you sure want to log out?")) return;
+    localStorage.removeItem("loginSession");
+    location.reload(); // reload page
   }
 };
 
