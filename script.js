@@ -713,6 +713,37 @@ window.onload = () => {
   const year = today.getFullYear(); // Full year (e.g., 2025)
   const formattedDate = `${day}/${month}/${year}`;
   document.getElementById("docDate").value = formattedDate;
+  
+  document.addEventListener("keydown", function(e) {
+    if (e.ctrlKey) {
+      switch (e.key.toLowerCase()) {
+        case "n": // Ctrl + N
+          e.preventDefault(); // prevent default browser new window
+          addItem();
+          break;
+          
+        case "s": // Ctrl + S
+          e.preventDefault(); // prevent browser save
+          generateJson();
+          break;
+          
+        case "x": // Ctrl + X
+          e.preventDefault(); // prevent undo
+          logout();
+          break;
+      }
+    }
+  });
+  
+  
+  function logout() {
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", () => {
+      if (!confirm("Are you sure want to log out?")) return;
+      localStorage.removeItem("loginSession");
+      location.reload(); // reload page
+    });
+  }
 };
 
 function generateBulkInvoices() {
@@ -1205,35 +1236,3 @@ document.querySelector('#invoiceForm').addEventListener('submit', (e) => {
   e.preventDefault();
   generateJSON();
 })
-
-
-document.addEventListener("keydown", function(e) {
-  if (e.ctrlKey) {
-    switch (e.key.toLowerCase()) {
-      case "n": // Ctrl + N
-        e.preventDefault(); // prevent default browser new window
-        addItem();
-        break;
-        
-      case "s": // Ctrl + S
-        e.preventDefault(); // prevent browser save
-        generateJson();
-        break;
-        
-      case "x": // Ctrl + X
-        e.preventDefault(); // prevent undo
-        logout();
-        break;
-    }
-  }
-});
-
-
-function logout() {
-  const logoutBtn = document.getElementById("logoutBtn");
-  logoutBtn.addEventListener("click", () => {
-    if (!confirm("Are you sure want to log out?")) return;
-    localStorage.removeItem("loginSession");
-    location.reload(); // reload page
-  });
-}
