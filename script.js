@@ -724,7 +724,7 @@ window.onload = () => {
           
         case "s": // Ctrl + S
           e.preventDefault(); // prevent browser save
-          generateJson();
+          generateJSON();
           break;
           
         case "x": // Ctrl + X
