@@ -239,7 +239,19 @@ const buyerMap = {
     Stcd: "36",
     Ph: null,
     Em: null
-  }
+  },
+  20: {
+  Gstin: "36AAFCL0077Q1Z1",
+  LglNm: "LAXMI AUTO AGENCIES PRIVATE LIMITED",
+  Addr1: "1-13-173,VINAYAK NAGAR,NIZAMABAD",
+  Addr2: "NIZAMABAD",
+  Loc: "NIZAMABAD",
+  Pin: 503001,
+  Pos: "36",
+  Stcd: "36",
+  Ph: 9440090930,
+  Em: null,
+},
 };
 const allowed = [
   "36AFHFS4680J1ZH",
