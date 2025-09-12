@@ -458,6 +458,56 @@ h2.header {
   box-shadow: 0 6px 18px rgba(29,78,216,0.25);
 }
 
+.shortcut-tips {
+  background: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px 20px;
+  max-width: 320px;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.shortcut-tips h2 {
+  margin-top: 0;
+  font-size: 16px;
+  color: var(--primary-color);
+  margin-bottom: 12px;
+}
+
+.shortcut-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.shortcut-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.shortcut-list li:hover {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+.keys {
+  font-family: monospace;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 5px;
+  font-size: 13px;
+}
 /* ===== Mobile Responsive ===== */
 @media (max-width: 768px) {
   /* Form layout: stack columns */
