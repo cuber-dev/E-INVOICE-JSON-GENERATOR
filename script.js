@@ -1,17 +1,17 @@
 let itemCount = 0;
 const buyerMap = {
   0: {
-  Gstin: "Select",
-  LglNm: "Please select the buyer",
-  Addr1: null,
-  Addr2: null,
-  Loc: null,
-  Pin: null,
-  Pos: null,
-  Stcd: null,
-  Ph: null,
-  Em: null
-},
+    Gstin: "Select",
+    LglNm: "Please select the buyer",
+    Addr1: null,
+    Addr2: null,
+    Loc: null,
+    Pin: null,
+    Pos: null,
+    Stcd: null,
+    Ph: null,
+    Em: null
+  },
   1: {
     Gstin: "33AAACS7032B1ZZ",
     LglNm: "TVS MOTOR COMPANY LTD",
@@ -51,8 +51,7 @@ const buyerMap = {
   4: {
     Gstin: "36AAACB5861B1Z1",
     LglNm: "BERAR FINANCE LTD",
-    Addr1:
-      "2N, 2, WARANGAL CITY CENTER, MULGU ROAD, INDUSTRIAL ETATE,Hanumakonda",
+    Addr1: "2N, 2, WARANGAL CITY CENTER, MULGU ROAD, INDUSTRIAL ETATE,Hanumakonda",
     Addr2: "WARANGAL",
     Loc: "WARANGAL",
     Pin: 503002,
@@ -100,8 +99,7 @@ const buyerMap = {
   8: {
     Gstin: "33AAJFH7551C1ZL",
     LglNm: "HARITA INSURANCE BROKING LLP",
-    Addr1:
-      "NO 29,JAYALAKSHMI ESTATES,SECOND FLOOR,HADDOWS ROAD,NANGAMBAKKAM,CHENNAI",
+    Addr1: "NO 29,JAYALAKSHMI ESTATES,SECOND FLOOR,HADDOWS ROAD,NANGAMBAKKAM,CHENNAI",
     Addr2: "CHENNAI",
     Loc: "CHENNAI",
     Pin: 600006,
@@ -161,8 +159,7 @@ const buyerMap = {
   13: {
     Gstin: "27AAECI3370G1ZN",
     LglNm: "INDICOSMIC CAPITAL PVT.LTD",
-    Addr1:
-      "OFFICE NO 101,BABA HOUSE NEXT TO WEH METRO STATION ANDHERI EAST,MUMBAI",
+    Addr1: "OFFICE NO 101,BABA HOUSE NEXT TO WEH METRO STATION ANDHERI EAST,MUMBAI",
     Addr2: "MUMBAI",
     Loc: "MUMBAI",
     Pin: 400093,
@@ -174,8 +171,7 @@ const buyerMap = {
   14: {
     Gstin: "36ADWFS8368L1ZT",
     LglNm: "SRI SIDDARAMESHWARA AUTO MOTIVES",
-    Addr1:
-      "8-135/1,OPP GOVT HIGH SCHOOL,BHIKNOOR MAIN ROAD 8-135/1,OPP GOVT HIGH",
+    Addr1: "8-135/1,OPP GOVT HIGH SCHOOL,BHIKNOOR MAIN ROAD 8-135/1,OPP GOVT HIGH",
     Addr2: "SCHOOL,BHIKNOOR MAIN ROAD",
     Loc: "BHIKNOOR",
     Pin: 503101,
@@ -211,8 +207,7 @@ const buyerMap = {
   17: {
     Gstin: "36AABCT3518Q1ZX",
     LglNm: "TATA AIG GENERAL INSURANCE CO LTD",
-    Addr1:
-      "Imperial Towers,H.No 7-1-6-617/A,5th and 6th Floor,GHMC no - 615,616, Ameerpet,Hyderabad,500016",
+    Addr1: "Imperial Towers,H.No 7-1-6-617/A,5th and 6th Floor,GHMC no - 615,616, Ameerpet,Hyderabad,500016",
     Addr2: "Hyderabad",
     Loc: "Hyderabad",
     Pin: 500016,
@@ -234,17 +229,17 @@ const buyerMap = {
     Em: null
   },
   19: {
-  Gstin: "36AAACS7032B1ZT",
-  LglNm: "TVS MOTOR COMPANY LTD",
-  Addr1: "FIRST FLOOR,2-11-30,PLOT NO-11,RUKMINI TOWER,PAIGHA COLONY,SECUNDRABAD",
-  Addr2: "Hyderabad",
-  Loc: "Hyderabad",
-  Pin: 500003,
-  Pos: "36",
-  Stcd: "36",
-  Ph: null,
-  Em: null
-}
+    Gstin: "36AAACS7032B1ZT",
+    LglNm: "TVS MOTOR COMPANY LTD",
+    Addr1: "FIRST FLOOR,2-11-30,PLOT NO-11,RUKMINI TOWER,PAIGHA COLONY,SECUNDRABAD",
+    Addr2: "Hyderabad",
+    Loc: "Hyderabad",
+    Pin: 500003,
+    Pos: "36",
+    Stcd: "36",
+    Ph: null,
+    Em: null
+  }
 };
 const allowed = [
   "36AFHFS4680J1ZH",
@@ -314,26 +309,28 @@ const predefinedItems = {
     isIGST: true,
     IsServc: "Y"
   },
-  "INCENTIVE FROM TVSM COMPANY (local)":{
+  "INCENTIVE FROM TVSM COMPANY (local)": {
     desc: "INCENTIVE FROM TVSM COMPANY",
     hsn: "9983",
     gst: 18,
     isIGST: false,
     IsServc: "Y"
   },
-    "INCENTIVE FROM TVSM COMPANY (outstate)": {
+  "INCENTIVE FROM TVSM COMPANY (outstate)": {
     desc: "INCENTIVE FROM TVSM COMPANY",
     hsn: "9983",
     gst: 18,
     isIGST: true,
     IsServc: "Y"
-  },  'LABOUR-local': {
+  },
+  'LABOUR-local': {
     desc: "LABOUR",
     hsn: "9954",
     gst: 18,
     isIGST: false,
     IsServc: "Y"
-  }, 'LABOUR-OUTSTATE': {
+  },
+  'LABOUR-OUTSTATE': {
     desc: "Labour Charges for Waranty",
     hsn: "9987",
     gst: 18,
@@ -351,6 +348,7 @@ const isServer = {
 };
 console.log("error")
 let createdInvoices = [];
+
 function addItem() {
   itemCount++;
   const container = document.getElementById("itemsContainer");
@@ -435,7 +433,7 @@ function updateGST(el) {
   const sgstField = block.querySelector(".sgstAmt");
   const igstDiv = block.querySelector(".igstDiv");
   const cgstSgstDiv = block.querySelector(".cgstSgstDiv");
-
+  
   let totalVal = total;
   if (igstDiv.style.display !== "none") {
     const igst = (total * gstRate) / 100;
@@ -491,8 +489,8 @@ function populateBuyerDetails() {
 
 function buildBuyerDropdown() {
   const buyerSelector = document.getElementById("buyerSelector");
-  buyerSelector.innerHTML = ""; 
-// Clear existing options
+  buyerSelector.innerHTML = "";
+  // Clear existing options
   for (const key in buyerMap) {
     const buyer = buyerMap[key];
     const option = document.createElement("option");
@@ -501,15 +499,16 @@ function buildBuyerDropdown() {
     buyerSelector.appendChild(option);
   }
   const bulkBuyer = document.getElementById("bulkBuyerSelect");
-      bulkBuyer.innerHTML = "";
+  bulkBuyer.innerHTML = "";
   for (const key in buyerMap) {
-  const buyer = buyerMap[key];
-  const option2 = document.createElement("option");
-  option2.value = key;
-  option2.textContent = `${buyer.Gstin} - ${buyer.LglNm}`;
-  bulkBuyer.appendChild(option2);
+    const buyer = buyerMap[key];
+    const option2 = document.createElement("option");
+    option2.value = key;
+    option2.textContent = `${buyer.Gstin} - ${buyer.LglNm}`;
+    bulkBuyer.appendChild(option2);
+  }
 }
-}
+
 function checkInvDateRange(dateStr) {
   // Expecting dateStr in dd/mm/yyyy format
   const [day, month, year] = dateStr.split("/").map(Number);
@@ -526,6 +525,7 @@ function checkInvDateRange(dateStr) {
   // Check if inputDate is between past30 and today
   return inputDate >= past30 && inputDate <= today;
 }
+
 function formatDate(input) {
   // Split by "-" (day-month-year)
   const parts = input.split("-");
@@ -546,13 +546,13 @@ function generateJSON() {
   const isGstin = document.getElementById("sellerGstin").value;
   if (!allowed.includes(isGstin)) return window.location.reload();
   
-  if(isServer.down) return alert("E-invoice Json server is down, please try again later!");
-  if(!checkInvDateRange(document.getElementById("docDate").value)) return alert('Invoice date must be within the last 30days including today!')
-  if(document.getElementById("buyerGstin").value === "Select") {
+  if (isServer.down) return alert("E-invoice Json server is down, please try again later!");
+  if (!checkInvDateRange(document.getElementById("docDate").value)) return alert('Invoice date must be within the last 30days including today!')
+  if (document.getElementById("buyerGstin").value === "Select") {
     alert("please select the buyer")
     return;
   }
-  if( isGstin === ""){
+  if (isGstin === "") {
     alert("please login first")
     window.location.reload();
     return;
@@ -563,16 +563,16 @@ function generateJSON() {
   let igstVal = 0;
   let totInvVal = 0;
   let docNumber = document
-  .getElementById("docNo")
-  .value.replace(/\s+/g, "")
-  .trim();
-
-if (createdInvoices.includes(docNumber)) {
-  return alert("Cannot create E-Invoice for same invoice Number: " + docNumber);
-}
-
-createdInvoices.push(docNumber);  
-const invoice = {
+    .getElementById("docNo")
+    .value.replace(/\s+/g, "")
+    .trim();
+  
+  if (createdInvoices.includes(docNumber)) {
+    return alert("Cannot create E-Invoice for same invoice Number: " + docNumber);
+  }
+  
+  createdInvoices.push(docNumber);
+  const invoice = {
     Version: "1.1",
     TranDtls: {
       TaxSch: "GST",
@@ -680,7 +680,7 @@ const invoice = {
     2
   );
   downloadJSON();
-
+  
   function downloadJSON() {
     const jsonText = document.getElementById("output").textContent;
     if (!jsonText.trim()) {
@@ -721,29 +721,29 @@ function generateBulkInvoices() {
     alert("Please upload a CSV file first!");
     return;
   }
-
+  
   const buyerId = document.getElementById("bulkBuyerSelect").value;
   const buyerDetails = buyerMap[buyerId];
   if (buyerDetails.Gstin === "Select") {
-  alert("please select the buyer")
-  return;
-  if (!buyerDetails) {
-    alert("Please select a buyer from Bulk Buyer dropdown!");
+    alert("please select the buyer")
     return;
+    if (!buyerDetails) {
+      alert("Please select a buyer from Bulk Buyer dropdown!");
+      return;
+    }
+    
   }
   
-}
-
   const sellerStcd = document.getElementById("sellerStcd").value;
   const sellerGstin = document.getElementById("sellerGstin").value;
-
+  
   Papa.parse(fileInput, {
     header: true,
     skipEmptyLines: true,
     complete: function(results) {
       const data = results.data;
       const zip = new JSZip();
-
+      
       // Group rows by invNo
       const invoiceGroups = {};
       data.forEach(row => {
@@ -751,21 +751,27 @@ function generateBulkInvoices() {
         if (!invoiceGroups[invNo]) invoiceGroups[invNo] = [];
         invoiceGroups[invNo].push(row);
       });
-
+      
       // Process each invoice
       Object.keys(invoiceGroups).forEach((invNo, idx) => {
         const rows = invoiceGroups[invNo];
-
-        let assVal = 0, cgst = 0, sgst = 0, igst = 0, total = 0;
+        
+        let assVal = 0,
+          cgst = 0,
+          sgst = 0,
+          igst = 0,
+          total = 0;
         const itemList = [];
-
+        
         rows.forEach((row, i) => {
           const taxable = parseFloat(row["taxable"]) || 0;
           const gstRate = parseFloat(row["percentage"]) || 0;
-
-          let itemCgst = 0, itemSgst = 0, itemIgst = 0;
+          
+          let itemCgst = 0,
+            itemSgst = 0,
+            itemIgst = 0;
           let itemTotal = taxable;
-
+          
           if (sellerStcd === buyerDetails.Stcd) {
             itemCgst = +(taxable * (gstRate / 200)).toFixed(2);
             itemSgst = +(taxable * (gstRate / 200)).toFixed(2);
@@ -774,7 +780,7 @@ function generateBulkInvoices() {
             itemIgst = +(taxable * (gstRate / 100)).toFixed(2);
             itemTotal += itemIgst;
           }
-
+          
           // Push item to ItemList
           itemList.push({
             SlNo: (i + 1).toString(),
@@ -791,7 +797,7 @@ function generateBulkInvoices() {
             TotItemVal: itemTotal,
             IsServc: row["isService"] || "N"
           });
-
+          
           // Add to totals
           assVal += taxable;
           cgst += itemCgst;
@@ -799,7 +805,7 @@ function generateBulkInvoices() {
           igst += itemIgst;
           total += itemTotal;
         });
-
+        
         const invoice = {
           Version: "1.1",
           TranDtls: { TaxSch: "GST", SupTyp: "B2B", IgstOnIntra: "N", RegRev: "N", EcmGstin: null },
@@ -823,10 +829,10 @@ function generateBulkInvoices() {
           },
           ItemList: itemList
         };
-
+        
         zip.file(`${invNo}.json`, JSON.stringify([invoice], null, 2));
       });
-
+      
       zip.generateAsync({ type: "blob" }).then(content => {
         saveAs(content, "bulk_invoices.zip");
       });
@@ -904,55 +910,55 @@ const themes = {
     "--danger-color": "#dc2626"
   },
   ocean: {
-  "--primary-color": "#1e3a8a",
-  "--secondary-color": "#e0f7fa",
-  "--accent-color": "#00bcd4",
-  "--hover-color": "#0288d1",
-  "--border-color": "#4dd0e1",
-  "--text-color": "#0d3b66",
-  "--bg-color": "#f0fdfa",
-  "--danger-color": "#d32f2f"
-},
-lava: {
-  "--primary-color": "#ff5722",
-  "--secondary-color": "#fff3e0",
-  "--accent-color": "#ff9800",
-  "--hover-color": "#e65100",
-  "--border-color": "#ffcc80",
-  "--text-color": "#3e2723",
-  "--bg-color": "#fff8f1",
-  "--danger-color": "#b71c1c"
-},
-galaxy: {
-  "--primary-color": "#4c1d95",
-  "--secondary-color": "#0f172a",
-  "--accent-color": "#6366f1",
-  "--hover-color": "#9333ea",
-  "--border-color": "#7dd3fc",
-  "--text-color": "#e0f2fe",
-  "--bg-color": "#1e1b4b",
-  "--danger-color": "#f43f5e"
-},
-autumn: {
-  "--primary-color": "#92400e",
-  "--secondary-color": "#fff7ed",
-  "--accent-color": "#d97706",
-  "--hover-color": "#b45309",
-  "--border-color": "#fcd34d",
-  "--text-color": "#451a03",
-  "--bg-color": "#fef3c7",
-  "--danger-color": "#991b1b"
-},
-rainbow: {
-  "--primary-color": "#e11d48", // red
-  "--secondary-color": "#fef3c7", // yellow
-  "--accent-color": "#22c55e", // green
-  "--hover-color": "#3b82f6", // blue
-  "--border-color": "#a78bfa", // violet
-  "--text-color": "#111827",
-  "--bg-color": "#ffffff",
-  "--danger-color": "#dc2626"
-},
+    "--primary-color": "#1e3a8a",
+    "--secondary-color": "#e0f7fa",
+    "--accent-color": "#00bcd4",
+    "--hover-color": "#0288d1",
+    "--border-color": "#4dd0e1",
+    "--text-color": "#0d3b66",
+    "--bg-color": "#f0fdfa",
+    "--danger-color": "#d32f2f"
+  },
+  lava: {
+    "--primary-color": "#ff5722",
+    "--secondary-color": "#fff3e0",
+    "--accent-color": "#ff9800",
+    "--hover-color": "#e65100",
+    "--border-color": "#ffcc80",
+    "--text-color": "#3e2723",
+    "--bg-color": "#fff8f1",
+    "--danger-color": "#b71c1c"
+  },
+  galaxy: {
+    "--primary-color": "#4c1d95",
+    "--secondary-color": "#0f172a",
+    "--accent-color": "#6366f1",
+    "--hover-color": "#9333ea",
+    "--border-color": "#7dd3fc",
+    "--text-color": "#e0f2fe",
+    "--bg-color": "#1e1b4b",
+    "--danger-color": "#f43f5e"
+  },
+  autumn: {
+    "--primary-color": "#92400e",
+    "--secondary-color": "#fff7ed",
+    "--accent-color": "#d97706",
+    "--hover-color": "#b45309",
+    "--border-color": "#fcd34d",
+    "--text-color": "#451a03",
+    "--bg-color": "#fef3c7",
+    "--danger-color": "#991b1b"
+  },
+  rainbow: {
+    "--primary-color": "#e11d48", // red
+    "--secondary-color": "#fef3c7", // yellow
+    "--accent-color": "#22c55e", // green
+    "--hover-color": "#3b82f6", // blue
+    "--border-color": "#a78bfa", // violet
+    "--text-color": "#111827",
+    "--bg-color": "#ffffff",
+    "--danger-color": "#dc2626"
+  },
   // 5. Sunset
   sunset: {
     "--primary-color": "#b91c1c",
@@ -1195,9 +1201,39 @@ window.addEventListener("DOMContentLoaded", () => {
   setTheme(saved);
 });
 
-document.querySelector('#invoiceForm').addEventListener('submit',(e) => {
+document.querySelector('#invoiceForm').addEventListener('submit', (e) => {
   e.preventDefault();
   generateJSON();
 })
 
 
+document.addEventListener("keydown", function(e) {
+  if (e.ctrlKey) {
+    switch (e.key.toLowerCase()) {
+      case "n": // Ctrl + N
+        e.preventDefault(); // prevent default browser new window
+        addItem();
+        break;
+        
+      case "s": // Ctrl + S
+        e.preventDefault(); // prevent browser save
+        generateJson();
+        break;
+        
+      case "x": // Ctrl + X
+        e.preventDefault(); // prevent undo
+        logout();
+        break;
+    }
+  }
+});
+
+
+function logout() {
+  const logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.addEventListener("click", () => {
+    if (!confirm("Are you sure want to log out?")) return;
+    localStorage.removeItem("loginSession");
+    location.reload(); // reload page
+  });
+}
