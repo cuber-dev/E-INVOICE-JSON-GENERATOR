@@ -557,7 +557,10 @@ function generateJSON() {
   if (!session) return window.location.reload();
   const isGstin = document.getElementById("sellerGstin").value;
   if (!allowed.includes(isGstin)) return window.location.reload();
-  
+  const buyerGstin = document.getElementById("buyerGstin").value;
+  if(buyerGstin === isGstin){
+    return alert("Cannot create invoice for same buyer and seller!")
+  }
   if (isServer.down) return alert("E-invoice Json server is down, please try again later!");
   if (!checkInvDateRange(document.getElementById("docDate").value)) return alert('Invoice date must be within the last 30days including today!')
   if (document.getElementById("buyerGstin").value === "Select") {
