@@ -719,7 +719,6 @@ window.onload = () => {
       switch (e.key.toLowerCase()) {
         case "e": // Ctrl + E
           e.preventDefault();
-          alert(true)// prevent default browser new window
           addItem();
           break;
           
