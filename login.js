@@ -18,7 +18,7 @@ const users = {
   },
   laxmi: {
     username: "14517",
-    password: "Sep@2025#",
+    password: "Oct@2025#",
     details: {
       Gstin: "36AAFCL0077Q1Z1",
       LglNm: "LAXMI AUTO AGENCIES PRIVATE LIMITED",
