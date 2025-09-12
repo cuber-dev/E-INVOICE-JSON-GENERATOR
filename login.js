@@ -2,7 +2,7 @@
 const users = {
   savera: {
     username: "14929",
-    password: "payme",
+    password: "Sep@2025#",
     details: {
       Gstin: "36AFHFS4680J1ZH",
       LglNm: "SAVERA AUTOCRAFT LLP",
