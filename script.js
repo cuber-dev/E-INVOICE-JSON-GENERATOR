@@ -282,7 +282,7 @@ const predefinedItems = {
   "PETROL VEHICLE": {
     desc: "TVS RAIDER 125",
     hsn: "87112029",
-    gst: 28,
+    gst: 18,
     isIGST: false,
     IsServc: "N"
   },
