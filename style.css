@@ -379,7 +379,35 @@ h2.header {
 .login-container.hidden{
   display: none;
 }
+#einvoice-features {
+  background: var(--bg-color);
+  width: 100%;    
+  margin: 2rem auto;
+  border-radius: .7rem;
+  max-width: 770px;/* Full width of container */
+  padding: 1rem 1.6rem;            /* Add some breathing space */
+  box-sizing: border-box;   /* Ensure padding stays inside width */
+}
 
+#einvoice-features h2 {
+  margin-bottom: 2rem;      /* Space below heading */
+  font-size: 1.5rem;        /* Slightly bigger heading */
+  color: #1e3a8a;           /* Deep blue (adjustable) */
+}
+
+#einvoice-features ul {
+  padding-left: 1.5rem;     /* Space for bullets */
+  margin: 0;
+  list-style: disc;    
+  text-align: left;         /* Align all text to the left */
+/* Standard bullets */
+}
+
+#einvoice-features li {
+  margin-bottom: 0.75rem;   /* Space between items */
+  line-height: 1.5;         /* More readable */
+  color: #333;              /* Neutral text color */
+}
 
 /* Fullscreen container with background blur */
 .login-container {

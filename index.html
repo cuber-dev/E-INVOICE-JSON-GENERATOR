@@ -345,7 +345,32 @@
     </li>
   </ul>
 </div>
+  <section id="einvoice-features" aria-labelledby="einvoice-title">
+  <h2 id="einvoice-title">Important Notes</h2>
+  <ul>
+    <li><strong>No duplicate invoice numbers in a session:</strong> you cannot create invoices that share the same <code>invoice number</code> within a single active session.</li>
+    
+    <li><strong>Buyer–Seller uniqueness enforced:</strong> creating an invoice for the same buyer <em>and</em> the same seller (duplicate buyer-seller pair) is not allowed.</li>
+    
+    <li><strong>12-hour session timeout:</strong> your session lasts <em>12 hours</em>. You will be automatically logged out when the 12-hour session expires.</li>
+    
+    <li><strong>Invoice date format:</strong> invoice dates must be entered in <code>DD/MM/YY</code> format (for example: <code>24/09/25</code>).</li>
+    
+    <li><strong>Default item fields:</strong> every item will have default values for <code>percentage</code> (GST %), <code>description</code>, <code>HSN</code>, and a default locality flag (either <em>local</em> or <em>out-of-state</em>).</li>
+    
+    <li><strong>Keyboard shortcuts:</strong> you can use shortcut keys to speed up invoice generation — shortcuts are available for common actions (add item, save draft, open buyer selector, etc.).</li>
+    
+    <li><strong>Bulk invoice via CSV:</strong> create bulk invoices using our CSV format — <em>download the CSV template</em>, fill it, and upload to generate multiple invoices at once.</li>
+    
+    <li><strong>Merge previously generated invoices:</strong> you can merge up to <strong>15</strong> previously generated invoices into a single bulk-invoice JSON and upload that file to create a merged invoice set.</li>
+    
+    <li><strong>Required fields to create an invoice:</strong> you must fill at minimum the <code>invoice number</code>, <code>date</code>, <code>items</code>, and <code>buyer details</code>. Invoices missing any of these will not be created.</li>
+    
+    <li><strong>REMAINDER:</strong> PETROL VEHICLES ITEM GST PERCENTAGE WAS CHANGED FROM <strong>28%</strong> TO <strong>18%</strong> AS THE GOVERNMENT CHANGED THE TAX STRUCTURE ON <strong>22 SEP 2025</strong>.</li>
+  </ul>
+</section>
 <footer class="footer">
+
   <h3>Made with love by Nandhu!</h3>
 </footer>
 </body>
