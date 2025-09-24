@@ -241,17 +241,17 @@ const buyerMap = {
     Em: null
   },
   20: {
-  Gstin: "36AAFCL0077Q1Z1",
-  LglNm: "LAXMI AUTO AGENCIES PRIVATE LIMITED",
-  Addr1: "1-13-173,VINAYAK NAGAR,NIZAMABAD",
-  Addr2: "NIZAMABAD",
-  Loc: "NIZAMABAD",
-  Pin: 503001,
-  Pos: "36",
-  Stcd: "36",
-  Ph: 9440090930,
-  Em: null,
-},
+    Gstin: "36AAFCL0077Q1Z1",
+    LglNm: "LAXMI AUTO AGENCIES PRIVATE LIMITED",
+    Addr1: "1-13-173,VINAYAK NAGAR,NIZAMABAD",
+    Addr2: "NIZAMABAD",
+    Loc: "NIZAMABAD",
+    Pin: 503001,
+    Pos: "36",
+    Stcd: "36",
+    Ph: 9440090930,
+    Em: null,
+  },
 };
 const allowed = [
   "36AFHFS4680J1ZH",
@@ -262,20 +262,6 @@ const predefinedItems = {
     desc: "WARRANTY",
     hsn: "87141090",
     gst: 28,
-    isIGST: true,
-    IsServc: "N"
-  },
-  BATTERY: {
-    desc: "BATTERY",
-    hsn: "85072000",
-    gst: 18,
-    isIGST: false,
-    IsServc: "N"
-  },
-  "ENGINE OIL": {
-    desc: "ENGINE OIL",
-    hsn: "27101980",
-    gst: 18,
     isIGST: true,
     IsServc: "N"
   },
@@ -300,14 +286,14 @@ const predefinedItems = {
     isIGST: false,
     IsServc: "N"
   },
-  "COMMISION LOCAL": {
+  "COMMISION (local)": {
     desc: "COMMISION",
     hsn: "996211",
     gst: 18,
     isIGST: false,
     IsServc: "Y"
   },
-  "COMMISION OUTSTATE": {
+  "COMMISION (outstate)": {
     desc: "COMMISION",
     hsn: "996211",
     gst: 18,
@@ -335,14 +321,14 @@ const predefinedItems = {
     isIGST: true,
     IsServc: "Y"
   },
-  'LABOUR-local': {
+  'LABOUR (local)': {
     desc: "LABOUR",
     hsn: "9954",
     gst: 18,
     isIGST: false,
     IsServc: "Y"
   },
-  'LABOUR-OUTSTATE': {
+  'LABOUR (outstate)': {
     desc: "Labour Charges for Waranty",
     hsn: "9987",
     gst: 18,
@@ -374,7 +360,6 @@ function addItem() {
       <select class="itemSelect" onchange="onItemSelect(this)">
         <option value="">-- Select Item --</option>
         ${options}
-        <option value="custom">+ New Item</option>
       </select>
     </label><br>
   `;
@@ -411,11 +396,11 @@ function onItemSelect(selectEl) {
   const cgstSgstDiv = block.querySelector(".cgstSgstDiv");
   const IsServc = block.querySelector(".IsServc");
   if (selected === "custom") {
-    descField.value = "";
-    hsnField.value = "";
-    gstField.value = "18";
-    igstDiv.style.display = "block";
-    cgstSgstDiv.style.display = "none";
+    // descField.value = "";
+    // hsnField.value = "";
+    // gstField.value = "18";
+    // igstDiv.style.display = "block";
+    // cgstSgstDiv.style.display = "none";
   } else {
     const item = predefinedItems[selected];
     descField.value = item.desc;
@@ -558,7 +543,7 @@ function generateJSON() {
   const isGstin = document.getElementById("sellerGstin").value;
   if (!allowed.includes(isGstin)) return window.location.reload();
   const buyerGstin = document.getElementById("buyerGstin").value;
-  if(buyerGstin === isGstin){
+  if (buyerGstin === isGstin) {
     return alert("Cannot create invoice for same buyer and seller!")
   }
   if (isServer.down) return alert("E-invoice Json server is down, please try again later!");
