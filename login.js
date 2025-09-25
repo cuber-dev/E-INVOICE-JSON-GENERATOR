@@ -15,7 +15,7 @@ const users = {
       Ph: 9866530909,
       Em: null,
     },
-    keys : ["2"]
+    keys : ["2","savera-1",'savera_1']
   },
   laxmi: {
     username: "14517",
@@ -32,7 +32,7 @@ const users = {
       Ph: 9440090930,
       Em: null,
     },
-    keys : ["1"]
+    keys : ["1",'laxmi-1','laxmi_1']
   },
 };
 
