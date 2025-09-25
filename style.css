@@ -442,7 +442,9 @@ h2.header {
   text-align: center;
   color: var(--primary-color);
 }
-
+.login-key-container{
+  margin-top: 1rem;
+}
 /* Input Fields */
 .field {
   display: flex;
