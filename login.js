@@ -12,9 +12,10 @@ const users = {
       Pin: 503111,
       Pos: "36",
       Stcd: "36",
-      Ph:9866530909,
+      Ph: 9866530909,
       Em: null,
     },
+    keys : ["2"]
   },
   laxmi: {
     username: "14517",
@@ -31,6 +32,7 @@ const users = {
       Ph: 9440090930,
       Em: null,
     },
+    keys : ["1"]
   },
 };
 
@@ -74,6 +76,23 @@ function checkSession() {
   return user;
 }
 
+function loginWithKey() {
+  const loginContainer = document.querySelector(".login-container");
+  const loginKey = document.getElementById("login-key").value.trim();
+  const status = document.getElementById("login-key-status");
+  // Check each user
+  for (const key in users) {
+    const u = users[key];
+    if (u.keys.includes(loginKey)) {
+      setSellerDetails(u.details);
+      loginContainer.classList.add("hidden");
+      saveLogin(key);
+      return;
+    }
+  }
+  status.innerHTML = "Invalid Key!";
+}
+
 // --- Event Listeners ---
 document.addEventListener("DOMContentLoaded", () => {
   const loginContainer = document.querySelector(".login-container");
@@ -94,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
     const status = document.getElementById("login-status");
-
+    
     // Check each user
     for (const key in users) {
       const u = users[key];
@@ -111,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", () => {
-  if(!confirm("Are you sure want to log out?")) return;
+  if (!confirm("Are you sure want to log out?")) return;
   localStorage.removeItem("loginSession");
   location.reload(); // reload page
 });
