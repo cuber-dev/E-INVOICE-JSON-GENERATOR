@@ -277,8 +277,6 @@ function sortBuyerMapByName(buyerMap) {
 }
 
 const buyerMap = sortBuyerMapByName(actualBuyerMap);
-
-console.log(buyerMap);
 const allowed = [
   "36AFHFS4680J1ZH",
   "36AAFCL0077Q1Z1",
