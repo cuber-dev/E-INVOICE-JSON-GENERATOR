@@ -1,5 +1,5 @@
 let itemCount = 0;
-const buyerMap = {
+const actualBuyerMap = {
   0: {
     Gstin: "Select",
     LglNm: "Please select the buyer",
@@ -12,7 +12,7 @@ const buyerMap = {
     Ph: null,
     Em: null
   },
-  1: {
+  "33AAACS7032B1ZZ": {
     Gstin: "33AAACS7032B1ZZ",
     LglNm: "TVS MOTOR COMPANY LTD",
     Addr1: "PB NO-4 HARITHA HOSUR",
@@ -24,7 +24,7 @@ const buyerMap = {
     Ph: null,
     Em: null
   },
-  2: {
+  "29AAACS7032B1ZO": {
     Gstin: "29AAACS7032B1ZO",
     LglNm: "TVS MOTOR COMPANY LTD",
     Addr1: "POST BOX 1 KADAKOLA POST,BYTHALI KARNATAK",
@@ -252,7 +252,7 @@ const buyerMap = {
     Ph: 9440090930,
     Em: null,
   },
-    21: {
+  21: {
     Gstin: "36AAACU5552C1ZK",
     LglNm: "UNITED INDIA INSURANCE COMPANY LIMITED",
     Addr1: "UNITED INDIA TOWERS 3 - 5 - 817 818,Floor No 2, OLD MLA QRTRS ROAD,BASHEERBAGH",
@@ -264,8 +264,21 @@ const buyerMap = {
     Ph: null,
     Em: null,
   },
-
 };
+function sortBuyerMapByName(buyerMap) {
+  const selectEntry = Object.values(buyerMap).find(b => b.Gstin === "Select");
+  const sortedOthers = Object.values(buyerMap)
+    .filter(b => b.Gstin !== "Select")
+    .sort((a, b) => a.LglNm.localeCompare(b.LglNm));
+  return Object.fromEntries([
+    [selectEntry.LglNm, selectEntry], // "Please select the buyer" first
+    ...sortedOthers.map(buyer => [buyer.LglNm, buyer])
+  ]);
+}
+
+const buyerMap = sortBuyerMapByName(actualBuyerMap);
+
+console.log(buyerMap);
 const allowed = [
   "36AFHFS4680J1ZH",
   "36AAFCL0077Q1Z1",
