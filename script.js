@@ -252,6 +252,19 @@ const buyerMap = {
     Ph: 9440090930,
     Em: null,
   },
+    21: {
+    Gstin: "36AAACU5552C1ZK",
+    LglNm: "UNITED INDIA INSURANCE COMPANY LIMITED",
+    Addr1: "UNITED INDIA TOWERS 3 - 5 - 817 818,Floor No 2, OLD MLA QRTRS ROAD,BASHEERBAGH",
+    Addr2: "BASHEERBAGH",
+    Loc: "BASHEERBAGH",
+    Pin: 500029,
+    Pos: "36",
+    Stcd: "36",
+    Ph: null,
+    Em: null,
+  },
+
 };
 const allowed = [
   "36AFHFS4680J1ZH",
